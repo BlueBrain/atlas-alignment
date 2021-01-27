@@ -19,9 +19,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-# variables
-from atlalign.allen.utils import CACHE_FOLDER, get_image  # noqa
-
 # functions
 from atlalign.allen.sync import (  # noqa
     corners_rs9,
@@ -33,3 +30,6 @@ from atlalign.allen.sync import (  # noqa
     warp_rs9,
     xy_to_pir_API,
 )
+
+# variables
+from atlalign.allen.utils import CACHE_FOLDER, get_image  # noqa

@@ -25,7 +25,7 @@ warnings.simplefilter(action="ignore")  # noqa
 import ants  # noqa
 import nibabel as nib  # noqa
 
-from atlalign.base import DisplacementField, GLOBAL_CACHE_FOLDER  # noqa
+from atlalign.base import GLOBAL_CACHE_FOLDER, DisplacementField  # noqa
 
 
 def antspy_registration(

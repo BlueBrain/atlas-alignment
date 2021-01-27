@@ -27,7 +27,6 @@ import mlflow
 import numpy as np
 import pandas as pd
 import pytest
-from keras.models import Model
 
 from atlalign.augmentations import load_dataset_in_memory
 from atlalign.ml_utils import (
@@ -44,7 +43,6 @@ def test_get_mlflow_artifact_path(monkeypatch, tmpdir):
     with mlflow.start_run():
         artifact_path = get_mlflow_artifact_path()
 
-    expected_artifact_path = pathlib.Path(str(tmpdir))
     expected = [
         x for x in pathlib.Path(str(tmpdir)).rglob("*") if "artifacts" in str(x)
     ][0]
@@ -114,13 +112,13 @@ class TestMLFlowCallback:
             # Train
             train_kwargs = fake_sg_c.call_args_list[0][1]
             assert train_kwargs["indexes"] == train_ixs_path
-            assert train_kwargs["shuffle"] == False
+            assert train_kwargs["shuffle"] is False
             assert train_kwargs["batch_size"] == 1
 
             # Val
             val_kwargs = fake_sg_c.call_args_list[1][1]
             assert val_kwargs["indexes"] == val_ixs_path
-            assert val_kwargs["shuffle"] == False
+            assert val_kwargs["shuffle"] is False
             assert val_kwargs["batch_size"] == 1
 
             # On train begin

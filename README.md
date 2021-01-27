@@ -1,55 +1,7 @@
 # Atlas Alignment
 
-<table>
-<tr>
-  <td>Latest Release</td>
-  <td>
-    <a href="https://github.com/BlueBrain/atlas_alignment/releases">
-    <img src="https://img.shields.io/github/v/release/BlueBrain/atlas_alignment" alt="Latest release" />
-    </a>
-  </td>
-</tr>
-<tr>
-  <td>License</td>
-  <td>
-    <a href="https://github.com/BlueBrain/atlas_alignment/blob/master/LICENSE.md">
-    <img src="https://img.shields.io/github/license/BlueBrain/atlas_alignment" alt="License" />
-    </a>
-</td>
-</tr>
-<tr>
-  <td>Build Status</td>
-  <td>
-    <a href="https://travis-ci.com/BlueBrain/atlas_alignment">
-    <img src="ADD TOKEN HERE" alt="Build status" />
-    </a>
-  </td>
-</tr>
-<tr>
-	<td>Code Style</td>
-	<td>
-		<a href="https://github.com/psf/black">
-		<img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Black">
-		</a>
-		<a href="https://pycqa.github.io/isort/">
-		<img src="https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336" alt="Isort">
-		</a>
-		<a href="http://www.pydocstyle.org/">
-		<img src="https://img.shields.io/badge/docstrings-pydocstyle-informational" alt="Pydocstyle">
-		</a>
-		<a href="https://flake8.pycqa.org/">
-		<img src="https://img.shields.io/badge/PEP8-flake8-informational" alt="Pydocstyle">
-		</a>
-	</td>
-</tr>
-</table>
-
-Atlas Alignment is a toolbox to perform multimodal image registration. It 
-includes both traditional and supervised deep learning models. 
-
-This project originated from the Blue Brain Project efforts on aligning mouse 
-brain atlases obtained with ISH gene expression and Nissl stains. 
-
+### Overview
+This project implements multiple alignment algorithms - including deep learning.
 
 ### Official documentation
 All details related to installation and logic are described in the official documentation. Once

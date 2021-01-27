@@ -26,9 +26,8 @@ See the module `atlalign.allen.utils.py` for lower level functions that are call
 
 import numpy as np
 import requests
-from skimage.transform import warp, resize
+from skimage.transform import resize, warp
 
-from atlalign.base import DisplacementField
 from atlalign.allen.utils import (
     get_2d,
     get_2d_bulk,
@@ -37,6 +36,7 @@ from atlalign.allen.utils import (
     pir_to_xy_API_single,
     xy_to_pir_API_single,
 )
+from atlalign.base import DisplacementField
 
 
 def get_reference_image(p, folder=None):

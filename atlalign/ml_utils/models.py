@@ -18,13 +18,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from copy import deepcopy
 import json
 import pathlib
+from copy import deepcopy
 
-from keras.models import Model, model_from_json
-from keras.models import load_model as load_model_keras
 from keras.layers import Lambda, concatenate
+from keras.models import Model
+from keras.models import load_model as load_model_keras
+from keras.models import model_from_json
 
 from atlalign.ml_utils import (
     Affine2DVF,

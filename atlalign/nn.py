@@ -20,29 +20,29 @@
 """
 
 import keras
+import mlflow
+import numpy as np
 from keras.layers import (
     Conv2D,
     Cropping2D,
     Dense,
+    Flatten,
     Input,
     Lambda,
     LeakyReLU,
+    MaxPooling2D,
+    Reshape,
     UpSampling2D,
     ZeroPadding2D,
     concatenate,
-    Flatten,
-    MaxPooling2D,
-    Reshape,
 )
 from keras.models import Model
-import mlflow
-import numpy as np
 
 from atlalign.ml_utils import (
     ALL_DVF_LOSSES,
     ALL_IMAGE_LOSSES,
-    BilinearInterpolation,
     Affine2DVF,
+    BilinearInterpolation,
     ExtractMoving,
     NoOp,
 )

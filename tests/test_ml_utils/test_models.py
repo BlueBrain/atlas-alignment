@@ -19,9 +19,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from copy import deepcopy
 import json
 import pathlib
+from copy import deepcopy
 
 import keras
 import numpy as np
@@ -32,8 +32,8 @@ from atlalign.ml_utils import (
     NoOp,
     load_model,
     merge_global_local,
-    save_model,
     replace_lambda_in_config,
+    save_model,
 )
 
 

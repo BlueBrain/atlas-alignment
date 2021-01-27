@@ -31,11 +31,11 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import (
-    griddata,
     LSQBivariateSpline,
+    NearestNDInterpolator,
     Rbf,
     SmoothBivariateSpline,
-    NearestNDInterpolator,
+    griddata,
 )
 
 try:
@@ -43,8 +43,8 @@ try:
 except ImportError as e:
     print(e)
 
-from skimage.transform import resize
 import pandas as pd
+from skimage.transform import resize
 
 from atlalign.utils import griddata_custom
 from atlalign.zoo import (

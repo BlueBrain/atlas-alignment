@@ -23,15 +23,18 @@ import pathlib
 from unittest.mock import Mock
 
 import h5py
-from keras.models import Model
 import mlflow
 import numpy as np
 import pandas as pd
 import pytest
+from keras.models import Model
 
 from atlalign.augmentations import load_dataset_in_memory
-from atlalign.ml_utils import MLFlowCallback, get_mlflow_artifact_path
-from atlalign.ml_utils import SupervisedGenerator
+from atlalign.ml_utils import (
+    MLFlowCallback,
+    SupervisedGenerator,
+    get_mlflow_artifact_path,
+)
 from atlalign.nn import supervised_model_factory
 
 

@@ -23,7 +23,7 @@ import keras
 import numpy as np
 import pytest
 
-from atlalign.nn import supervised_model_factory, supervised_global_model_factory
+from atlalign.nn import supervised_global_model_factory, supervised_model_factory
 
 
 class TestSupervisedModelFactory:

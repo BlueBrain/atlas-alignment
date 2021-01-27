@@ -23,6 +23,7 @@ import h5py
 import numpy as np
 from skimage.feature import canny
 from skimage.util import img_as_float32
+
 from atlalign.base import DisplacementField
 
 

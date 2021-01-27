@@ -24,30 +24,27 @@ import pytest
 
 from atlalign.base import DisplacementField
 from atlalign.metrics import (
+    _compute_weights_kp,
+    _euclidean_distance_kp,
     angular_error_of,
     correlation_combined,
-    mae_combined,
-    mse_combined,
-    r2_combined,
-    vector_distance_combined,
-)
-from atlalign.metrics import dice_score, iou_score
-from atlalign.metrics import (
-    mse_img,
-    mae_img,
-    psnr_img,
-    ssmi_img,
-    mi_img,
     cross_correlation_img,
     demons_img,
-    perceptual_loss_img,
-)
-from atlalign.metrics import (
-    _euclidean_distance_kp,
-    _compute_weights_kp,
-    tre_kp,
-    rtre_kp,
+    dice_score,
     improvement_kp,
+    iou_score,
+    mae_combined,
+    mae_img,
+    mi_img,
+    mse_combined,
+    mse_img,
+    perceptual_loss_img,
+    psnr_img,
+    r2_combined,
+    rtre_kp,
+    ssmi_img,
+    tre_kp,
+    vector_distance_combined,
 )
 
 ALL_DVF_METRICS = {

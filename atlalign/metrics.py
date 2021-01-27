@@ -39,11 +39,11 @@ from functools import wraps
 import ants
 import lpips_tf
 import numpy as np
+import pandas as pd
+import tensorflow as tf
 from scipy.spatial import distance
 from skimage.measure import compare_psnr, compare_ssim
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-import pandas as pd
-import tensorflow as tf
 
 from atlalign.base import DisplacementField
 from atlalign.data import annotation_volume, segmentation_collapsing_labels

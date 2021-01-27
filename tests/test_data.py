@@ -24,8 +24,8 @@ import pytest
 
 from atlalign.data import (
     annotation_volume,
-    manual_registration,
     circles,
+    manual_registration,
     nissl_volume,
     rectangles,
     segmentation_collapsing_labels,

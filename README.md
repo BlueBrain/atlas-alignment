@@ -38,3 +38,7 @@ Assuming the user ran the above it should be possible to generate the docs
 cd docs
 make clean && make html
 ```
+
+### Examples
+You can find multiple examples in the documentation. Specifically, make
+sure to read the **Building Blocks** section to understand the basics.

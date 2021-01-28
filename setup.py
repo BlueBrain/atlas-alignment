@@ -20,7 +20,7 @@ INSTALL_REQUIRES = [
     "nibabel>=2.4.0",
     "numpy>=1.16.3",
     "statsmodels>=0.9.0",
-    "scikit-image>=0.15.0",
+    "scikit-image>=0.16.0",
     "scikit-learn>=0.20.2",
     "scipy==1.2.1",
 ]

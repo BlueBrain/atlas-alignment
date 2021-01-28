@@ -42,7 +42,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from scipy.spatial import distance
-from skimage.measure import compare_psnr, compare_ssim
+from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from atlalign.base import DisplacementField
@@ -793,7 +793,7 @@ def psnr_img(y_true, y_pred, mask=None, data_range=None):
         size = y_true.shape
         mask = np.ones(size, dtype=bool)
 
-    return compare_psnr(y_true[mask], y_pred[mask], data_range=data_range)
+    return peak_signal_noise_ratio(y_true[mask], y_pred[mask], data_range=data_range)
 
 
 @multiple_images_decorator
@@ -904,7 +904,7 @@ def ssmi_img(y_true, y_pred):
         The structural similarity (SSMI) metric. Similarity metric, the higher the more similar the images are.
 
     """
-    return compare_ssim(y_true, y_pred)
+    return structural_similarity(y_true, y_pred)
 
 
 @multiple_images_decorator

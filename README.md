@@ -1,3 +1,5 @@
+<img src="docs/source/logo/Atlas_Alignment_banner.jpg"/>
+
 # Atlas Alignment
 
 <table>
@@ -21,7 +23,7 @@
   <td>Build Status</td>
   <td>
     <a href="https://travis-ci.com/BlueBrain/atlas_alignment">
-    <img src="ADD TOKEN HERE" alt="Build status" />
+    <img src="https://travis-ci.com/BlueBrain/atlas_alignment.svg?token=EpNKg1Tw8ZGyy3nCEcuz&branch=master" alt="Build status" />
     </a>
   </td>
 </tr>

@@ -20,11 +20,7 @@
 """
 
 from atlalign.ml_utils.augmentation import augmenter_1  # noqa
-from atlalign.ml_utils.callbacks import (  # noqa
-    MLFlowCallback,
-    get_mlflow_artifact_path,
-)
-
+from atlalign.ml_utils.callbacks import MLFlowCallback, get_mlflow_artifact_path  # noqa
 from atlalign.ml_utils.io import SupervisedGenerator  # noqa
 from atlalign.ml_utils.layers import (  # noqa
     Affine2DVF,
@@ -36,9 +32,9 @@ from atlalign.ml_utils.layers import (  # noqa
 )
 from atlalign.ml_utils.losses import (  # noqa
     DVF2IMG,
+    NCC,
     Grad,
     Mixer,
-    NCC,
     PerceptualLoss,
     VDClipper,
     cross_correlation,
@@ -52,9 +48,9 @@ from atlalign.ml_utils.losses import (  # noqa
 from atlalign.ml_utils.models import (  # noqa
     load_model,
     merge_global_local,
-    save_model,
     replace_lambda_in_config,
-)  # noqa
+    save_model,
+)
 
 # Create utility dictionary
 ALL_IMAGE_LOSSES = {

@@ -25,8 +25,8 @@ import pathlib
 
 import h5py
 import keras
-import numpy as np
 import mlflow
+import numpy as np
 
 from atlalign.base import DisplacementField
 from atlalign.data import nissl_volume

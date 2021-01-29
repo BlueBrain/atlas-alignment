@@ -29,7 +29,7 @@ import math
 
 import cv2
 import numpy as np
-from scipy.interpolate import griddata, Rbf, SmoothBivariateSpline
+from scipy.interpolate import Rbf, SmoothBivariateSpline, griddata
 from skimage.filters import gaussian
 from skimage.transform import AffineTransform, ProjectiveTransform, SimilarityTransform
 

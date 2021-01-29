@@ -19,6 +19,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import numpy as np
+import tensorflow as tf
 from keras import backend as K
 from keras.engine.topology import Layer
 from keras.layers import (
@@ -31,8 +33,6 @@ from keras.layers import (
     ReLU,
     Reshape,
 )
-import numpy as np
-import tensorflow as tf
 
 
 def K_meshgrid(x, y):

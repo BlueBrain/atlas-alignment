@@ -25,11 +25,11 @@ withing ML models.
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import json
 import os
 import warnings
 
 import h5py
-import json
 import numpy as np
 from skimage.draw import circle
 from skimage.util import img_as_float32

@@ -17,15 +17,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import keras.backend as K
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
-from skimage.draw import rectangle
-
-import keras.backend as K
+import tensorflow as tf
 from keras.layers import Input
 from keras.models import Model, load_model, save_model
-import tensorflow as tf
+from skimage.draw import rectangle
 
 from atlalign.base import DisplacementField
 from atlalign.ml_utils import (
@@ -34,7 +33,6 @@ from atlalign.ml_utils import (
     DVFComposition,
     block_stn,
 )
-
 from atlalign.ml_utils.layers import BilinearInterpolation_
 
 

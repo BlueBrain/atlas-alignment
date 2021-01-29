@@ -19,24 +19,24 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+import json
+import os
+import pickle
+import warnings
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from collections import deque
 from copy import deepcopy
 from datetime import datetime
-import json
-import os
 from pathlib import Path
-import pickle
-import warnings
 
 import cv2
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button, RadioButtons, Slider
 import numpy as np
+from matplotlib.widgets import Button, RadioButtons, Slider
 from skimage.color import gray2rgb
-from skimage.util import img_as_float32
 from skimage.exposure import equalize_hist
+from skimage.util import img_as_float32
 
 from atlalign.base import DisplacementField
 from atlalign.data import nissl_volume

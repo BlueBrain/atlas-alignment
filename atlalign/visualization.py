@@ -19,10 +19,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from matplotlib import animation
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from matplotlib import animation
 
 from atlalign.base import DisplacementField
 from atlalign.metrics import angular_error_of

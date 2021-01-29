@@ -17,9 +17,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from matplotlib import animation
 import numpy as np
 import pytest
+from matplotlib import animation
 
 from atlalign.base import DisplacementField
 from atlalign.visualization import (

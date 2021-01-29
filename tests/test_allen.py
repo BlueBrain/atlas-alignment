@@ -19,22 +19,11 @@
 
 from unittest.mock import Mock
 
-from allensdk.api.queries.synchronization_api import SynchronizationApi
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 import requests
-
-from atlalign.allen.utils import (
-    CACHE_FOLDER,
-    CommonQueries,
-    get_2d,
-    get_2d_bulk,
-    get_3d,
-    get_image,
-    pir_to_xy_API_single,
-    xy_to_pir_API_single,
-)
+from allensdk.api.queries.synchronization_api import SynchronizationApi
 
 from atlalign.allen import (
     corners_rs9,
@@ -44,6 +33,16 @@ from atlalign.allen import (
     pir_to_xy_local_coronal,
     warp_rs9,
     xy_to_pir_API,
+)
+from atlalign.allen.utils import (
+    CACHE_FOLDER,
+    CommonQueries,
+    get_2d,
+    get_2d_bulk,
+    get_3d,
+    get_image,
+    pir_to_xy_API_single,
+    xy_to_pir_API_single,
 )
 
 EXISTING_IMAGE_IDS = [69750516, 101349546]

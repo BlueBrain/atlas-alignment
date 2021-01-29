@@ -28,10 +28,10 @@ Each function here is independent and performs a very specific lower level opera
 
 import os
 
-from allensdk.api.queries.image_download_api import ImageDownloadApi
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
+from allensdk.api.queries.image_download_api import ImageDownloadApi
 
 CACHE_FOLDER = os.path.expanduser("~/.atlalign/")
 

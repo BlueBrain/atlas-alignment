@@ -29,7 +29,6 @@ from atlalign.metrics import (
     angular_error_of,
     correlation_combined,
     cross_correlation_img,
-    demons_img,
     dice_score,
     improvement_kp,
     iou_score,
@@ -66,7 +65,6 @@ ALL_IMG_METRICS = {
     "mi_m": partial(mi_img, metric_type="MattesMutualInformation"),
     "mi_h": partial(mi_img, metric_type="JointHistogramMutualInformation"),
     "cross_correlation": cross_correlation_img,
-    "demons": demons_img,
     "perceptual_loss_net_vgg": partial(perceptual_loss_img, model="net", net="vgg"),
     "perceptual_loss_net_alex": partial(perceptual_loss_img, model="net", net="alex"),
     "perceptual_loss_netlin_vgg": partial(
@@ -493,7 +491,7 @@ class TestImageSimilarityMetrics:
         [
             pytest.param(x, marks=pytest.mark.slow) if "perceptual_loss" in x else x
             for x in ALL_IMG_METRICS.keys()
-            if x not in ["mi_m", "mi_h", "demons"]
+            if x not in ["mi_m", "mi_h"]
         ],
     )
     def test_value_identical_images(self, img_grayscale_float, metric):
@@ -509,7 +507,6 @@ class TestImageSimilarityMetrics:
             "mi_m": None,
             "mi_h": None,
             "cross_correlation": 1,
-            "demons": None,
             "perceptual_loss_net_vgg": 0,
             "perceptual_loss_net_alex": 0,
             "perceptual_loss_netlin_vgg": 0,
@@ -546,7 +543,6 @@ class TestImageSimilarityMetrics:
             "mi_m": "s",
             "mi_h": "s",
             "cross_correlation": "s",
-            "demons": "l",
             "perceptual_loss_net_vgg": "l",
             "perceptual_loss_net_alex": "l",
             "perceptual_loss_netlin_vgg": "l",
@@ -588,7 +584,7 @@ class TestImageSimilarityMetrics:
         [
             pytest.param(x, marks=pytest.mark.slow) if "perceptual_loss" in x else x
             for x in ALL_IMG_METRICS.keys()
-            if x not in ["demons", "mi_m", "mi_h"]
+            if x not in ["mi_m", "mi_h"]
         ],
     )
     def test_symmetric(self, img_grayscale_float, metric):
@@ -596,7 +592,7 @@ class TestImageSimilarityMetrics:
 
         Notes
         -----
-        Excluding 'demons', 'mi_m', 'mi_h' because there is some crazy irreproducibility in ANTsPy.
+        Excluding 'mi_m', 'mi_h' because there is some crazy irreproducibility in ANTsPy.
 
         """
         size = img_grayscale_float.shape
@@ -612,13 +608,7 @@ class TestImageSimilarityMetrics:
         "metric", ["mse", "mae", "psnr", "cross_correlation", "mi_h", "mi_m"]
     )
     def test_mask(self, img_grayscale_float, metric):
-        """Test that the mask is working.
-
-        Notes
-        -----
-        Excluding 'demons' because there is some crazy irreproducibility in ANTsPy.
-
-        """
+        """Test that the mask is working."""
         size = img_grayscale_float.shape
         img_true = img_grayscale_float
         df = DisplacementField.generate(size, approach="affine_simple", rotation=1)

@@ -93,8 +93,8 @@ make clean && make html
 You can find multiple examples in the documentation. Specifically, make
 sure to read the **Building Blocks** section to understand the basics.
 
-### Funding & Acknowledgment
 
+### Funding & Acknowledgment
 This project was supported by funding to the Blue Brain 
 Project, a research center of the Ecole polytechnique fédérale de Lausanne, from 
 the Swiss government's ETH Board of the Swiss Federal Institutes of Technology.

@@ -91,7 +91,9 @@ make clean && make html
 
 ### Examples
 You can find multiple examples in the documentation. Specifically, make
-sure to read the **Building Blocks** section to understand the basics.
+sure to read the 
+[Building Blocks](https://atlas-alignment.readthedocs.io/en/latest/source/building_blocks.html) 
+section of the docs to understand the basics.
 
 
 ### Funding & Acknowledgment

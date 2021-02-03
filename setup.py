@@ -6,6 +6,14 @@ import atlalign
 
 # Preparations
 VERSION = atlalign.__version__
+DESCRIPTION = "Blue Brain multi-modal registration and alignment toolbox"
+
+LONG_DESCRIPTION = """
+Atlas Alignment is a toolbox to perform multimodal image registration. It 
+includes both traditional and supervised deep learning models. 
+
+This project originated from the Blue Brain Project efforts on aligning mouse 
+brain atlases obtained with ISH gene expression and Nissl stains."""
 
 PYTHON_REQUIRES = "~=3.7.0"
 INSTALL_REQUIRES = [
@@ -28,9 +36,21 @@ INSTALL_REQUIRES = [
 setup(
     name="atlalign",
     version=VERSION,
-    description="Image registration with deep learning",
+    description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
+    url="https://github.com/BlueBrain/atlas_alignment",
     author="Blue Brain Project, EPFL",
+    license="LGPLv3",
     packages=find_packages(),
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+        "Operating System :: Unix",
+        "Programming Language :: Python :: 3",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Scientific/Engineering :: Image Processing",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
     python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
     extras_require={

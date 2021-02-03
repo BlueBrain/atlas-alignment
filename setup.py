@@ -9,10 +9,10 @@ VERSION = atlalign.__version__
 DESCRIPTION = "Blue Brain multi-modal registration and alignment toolbox"
 
 LONG_DESCRIPTION = """
-Atlas Alignment is a toolbox to perform multimodal image registration. It 
-includes both traditional and supervised deep learning models. 
+Atlas Alignment is a toolbox to perform multimodal image registration. It
+includes both traditional and supervised deep learning models.
 
-This project originated from the Blue Brain Project efforts on aligning mouse 
+This project originated from the Blue Brain Project efforts on aligning mouse
 brain atlases obtained with ISH gene expression and Nissl stains."""
 
 PYTHON_REQUIRES = "~=3.7.0"

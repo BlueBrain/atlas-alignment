@@ -21,7 +21,19 @@
 
 import keras
 import keras.backend as K
-import lpips_tf
+
+try:
+    import lpips_tf
+except ModuleNotFoundError as err:
+    raise ModuleNotFoundError(
+        str(err)
+        + "\n"
+        + """
+    Please install lpips-tensorflow by running the following command:
+    $ pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
+    """
+    )
+
 import numpy as np
 import tensorflow as tf
 

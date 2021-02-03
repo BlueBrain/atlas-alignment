@@ -37,7 +37,19 @@ should always return a tuple of (metric_average, metric_per_output).
 from functools import wraps
 
 import ants
-import lpips_tf
+
+try:
+    import lpips_tf
+except ModuleNotFoundError as err:
+    raise ModuleNotFoundError(
+        str(err)
+        + "\n"
+        + """
+    Please install lpips-tensorflow by running the following command:
+    $ pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
+    """
+    )
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf

@@ -21,7 +21,6 @@ INSTALL_REQUIRES = [
     "allensdk>=0.16.3",
     "imgaug<0.3",
     "Keras==2.2.4",
-    "keras_contrib @ git+http://github.com/keras-team/keras-contrib.git@e1574a1#egg=keras_contrib",
     "lpips_tf @ git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf",
     "matplotlib>=3.0.3",
     "mlflow",

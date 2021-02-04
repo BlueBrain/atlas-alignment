@@ -6,6 +6,14 @@ import atlalign
 
 # Preparations
 VERSION = atlalign.__version__
+DESCRIPTION = "Blue Brain multi-modal registration and alignment toolbox"
+
+LONG_DESCRIPTION = """
+Atlas Alignment is a toolbox to perform multimodal image registration. It
+includes both traditional and supervised deep learning models.
+
+This project originated from the Blue Brain Project efforts on aligning mouse
+brain atlases obtained with ISH gene expression and Nissl stains."""
 
 PYTHON_REQUIRES = "~=3.7.0"
 INSTALL_REQUIRES = [
@@ -13,24 +21,34 @@ INSTALL_REQUIRES = [
     "allensdk>=0.16.3",
     "imgaug<0.3",
     "Keras==2.2.4",
-    "keras_contrib @ git+http://github.com/keras-team/keras-contrib.git@e1574a1#egg=keras_contrib",
-    "lpips_tf @ git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf",
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",
     "numpy>=1.16.3",
-    "statsmodels>=0.9.0",
     "scikit-image>=0.16.0",
     "scikit-learn>=0.20.2",
     "scipy==1.2.1",
+    "tensorflow>=1.15.4,<2",
 ]
 
 setup(
     name="atlalign",
     version=VERSION,
-    description="Image registration with deep learning",
+    description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
+    url="https://github.com/BlueBrain/atlas_alignment",
     author="Blue Brain Project, EPFL",
+    license="LGPLv3",
     packages=find_packages(),
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+        "Operating System :: Unix",
+        "Programming Language :: Python :: 3",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Scientific/Engineering :: Image Processing",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
     python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
     extras_require={
@@ -39,12 +57,10 @@ setup(
             "flake8>=3.7.4",
             "pydocstyle>=3.0.0",
             "pytest>=3.10.1",
-            "pytest-benchmark>=3.2.2",
             "pytest-cov",
             "pytest-mock>=1.10.1",
         ],
         "docs": ["sphinx>=1.3", "sphinx-bluebrain-theme"],
-        "tf": ["tensorflow>=1.15.4,<2"],
     },
     entry_points={"console_scripts": ["label-tool = atlalign.label.cli:main"]},
 )

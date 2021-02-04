@@ -54,39 +54,43 @@ brain atlases obtained with ISH gene expression and Nissl stains.
 
 
 ### Official documentation
-All details related to installation and logic are described in the official documentation. Once
-deployed a link will be added. Until then one can generate it locally following the instructions
-below.
+All details related to installation and logic are described in the 
+[official documentation](https://atlas-alignment.readthedocs.io/).
 
 
-### Normal installation
-Make sure the `pip` version is at least `19.1`.
+### Installation
 
-```bash
-pip install --upgrade pip
-pip --version  # make sure >= 19.1
+#### Installation Requirements
+
+Some of the functionalities of `atlalign` depend on the [TensorFlow implementation
+of the Learned Perceptual Image Patch Similarity (LPIPS)](https://github.com/alexlee-gk/lpips-tensorflow). Unfortunately, the
+package is not available on PyPI and must be installed manually as follows.
+```shell script
+pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
 ```
 
-Then one can move on to installing the actual `atlalign` package:
+You can now move on to installing the actual `atlalign` package!
 
+#### Installation from PyPI
+The `atlalign` package can be easily installed from PyPI.
+```shell script
+pip install atlalign
 ```
-pip install git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign[tf]
-```
-The extras entry `[tf]` represents TensorFlow and can be dropped if it is already installed.
 
-
-### Development installation + docs
-As described above, make sure to get the most recent `pip`.
+#### Installation from source
+As an alternative to installing from PyPI, if you want to try the latest version
+you can also install from source. 
+```shell script
+pip install git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign
 ```
+
+#### Installation for development
+If you want a dev install, you should install the latest version from source with
+all the extra requirements for running test and generating docs. 
+```shell script
 git clone https://github.com/BlueBrain/atlas_alignment
 cd atlas_alignment
-pip install -e .[dev,docs,tf]
-```
-
-Assuming the user ran the above it should be possible to generate the docs 
-```
-cd docs
-make clean && make html
+pip install -e .[dev,docs]
 ```
 
 ### Examples

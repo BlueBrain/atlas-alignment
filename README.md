@@ -62,14 +62,6 @@ All details related to installation and logic are described in the
 
 #### Installation Requirements
 
-##### Pip
-First of all, make sure the `pip` version is at least `19.1`.
-```shell script
-pip install --upgrade pip
-pip --version  # make sure >= 19.1
-```
-
-##### LPIPS-TensorFlow
 Some of the functionalities of `atlalign` depend on the [TensorFlow implementation
 of the Learned Perceptual Image Patch Similarity (LPIPS)](https://github.com/alexlee-gk/lpips-tensorflow). Unfortunately, the
 package is not available on PyPI and must be installed manually as follows.

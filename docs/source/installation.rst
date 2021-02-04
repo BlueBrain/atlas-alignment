@@ -4,31 +4,41 @@ Installation
 ============
 It is highly recommended to install the project into a new virtual environment.
 
-Requirements
-------------
+Python Requirements
+-------------------
 The project is only available for **Python 3.7**. The main reason for this 
 restriction is an external dependency **ANTsPy** that does
 not provide many precompiled wheels on PyPI.
 
-
-Standard installation
+External Dependencies
 ---------------------
-First of all make sure the :code:`pip` version is at least :code:`19.1`
-(`PyPA <https://pip.pypa.io/en/stable/reference/pip_install/#requirement-specifiers>`_).
+Some of the functionalities of :code:`atlalign` depend on the
+`TensorFlow implementation of the Learned Perceptual Image Patch Similarity <https://github.com/alexlee-gk/lpips-tensorflow>`_.
+Unfortunately, the
+package is not available on PyPI and must be installed manually as follows.
 
 .. code-block:: bash
 
-    pip install --upgrade pip
-    pip --version  # make sure >= 19.1
+    pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
 
-Then one can move on to installing the actual :code:`atlalign` package:
+You can now move on to installing the actual `atlalign` package!
+
+Installation from PyPI
+----------------------
+The :code:`atlalign` package can be easily installed from PyPI.
 
 .. code-block:: bash
 
-    pip install git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign[tf]
+    pip install atlalign
 
-The extras entry :code:`[tf]` represents **TensorFlow** and can be dropped if it is already installed.
+Installation from source
+------------------------
+As an alternative to installing from PyPI, if you want to try the latest version
+you can also install from source.
 
+.. code-block:: bash
+
+    pip install git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign
 
 Development installation
 ------------------------
@@ -37,13 +47,12 @@ following way:
 
 - **dev** - pytest + plugins, flake8, pydocstyle, tox
 - **docs** - sphinx
-- **tf** - tensorflow
 
 .. code-block:: bash
 
     git clone https://github.com/BlueBrain/atlas_alignment
     cd atlas_alignment
-    pip install -e .[dev,docs,tf]
+    pip install -e .[dev,docs]
 
 
 Generating documentation

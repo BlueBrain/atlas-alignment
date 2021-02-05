@@ -12,11 +12,10 @@ jobs:
 
   run_test:
 
-    runs-on:
-      ${{ matrix.os }}
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         python-version: [3.7]  # currently ANTsPy wheels are only avail for py37
 
     steps:

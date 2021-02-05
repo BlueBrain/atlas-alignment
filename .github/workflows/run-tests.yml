@@ -5,12 +5,12 @@ on:
   push:
     branches: master
   pull_request:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
 
 
 jobs:
 
   run_test:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
 
     runs-on: ubuntu-latest
 

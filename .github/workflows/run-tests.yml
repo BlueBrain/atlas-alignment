@@ -10,6 +10,7 @@ on:
 jobs:
 
   run_test:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
 
     runs-on: ubuntu-latest
 
@@ -21,9 +22,6 @@ jobs:
 
       - name: checkout latest commit
         uses: actions/checkout@v2
-
-      - name: print commit msg
-        run: echo ${{ github.event.head_commit.message }}
 
       - name: check skip ci
         uses: mstachniuk/ci-skip@v1

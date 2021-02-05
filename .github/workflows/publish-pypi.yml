@@ -16,12 +16,12 @@ jobs:
     steps:
 
       - name: checkout latest commit
-          uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: setup python 3.7
-          uses: actions/setup-python@v2
-          with:
-            python-version: 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
 
       - name: create source distribution
         run: |

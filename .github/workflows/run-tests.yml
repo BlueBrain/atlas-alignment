@@ -1,12 +1,9 @@
-name: run tests
-
-
-default_branch: master
+name: ci testsing
 
 
 on:
   push:
-    branches: ${{ default_branch }}
+    branches: master
   pull_request:
     if: "contains(github.event.head_commit.message, '[run tests]')"
 
@@ -20,8 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: [3.7] # currently ANTsPy wheels are only avail for py37
-
+        python-version: [3.7]  # currently ANTsPy wheels are only avail for py37
 
     steps:
 
@@ -38,9 +34,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox
 
-      # TODO: mmmh... should the various tox tests be different stages of a same job, or different jobs?
-      # TODO: pros/cons: run in parallel, stop if one breaks, ...
-      # TODO: also, how do we generalize this to when we want only one stage to run on several machines? (maybe we dont)
       - name: linting and code style
         run: tox -vv lint
 

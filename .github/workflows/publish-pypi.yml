@@ -1,0 +1,38 @@
+name: pypi publishing
+
+
+on:
+  push:
+    tags: 'v[0-9]+.[0-9]+.[0-9]+'
+    branches: master
+
+
+jobs:
+
+  publish_on_pypi:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: checkout latest commit
+          uses: actions/checkout@v2
+
+      - name: setup python 3.7
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.7
+
+      - name: create source distribution
+        run: |
+            python setup.py sdist
+
+      - name: create wheel distribution
+        run: |
+          python setup.py sdist
+
+      - name: publish package to pypi
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_PASSWORD }}

@@ -22,9 +22,6 @@ jobs:
       - name: checkout latest commit
         uses: actions/checkout@v2
 
-      - name: print git
-        run: git log --pretty --oneline
-
       - name: setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:

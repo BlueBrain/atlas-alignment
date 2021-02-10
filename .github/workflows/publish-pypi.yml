@@ -4,7 +4,7 @@ name: pypi publishing
 on:
   push:
     branches:
-      - gh_actions_fix
+      - master
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
@@ -40,10 +40,8 @@ jobs:
         run: |
           python setup.py bdist_wheel
 
-      # TODO: replace test pypi with pypi
       - name: publish package to pypi
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
-          password: ${{ secrets.TESTPYPI_PASSWORD }}
-          repository_url: https://test.pypi.org/legacy/
+          password: ${{ secrets.PYPI_PASSWORD }}

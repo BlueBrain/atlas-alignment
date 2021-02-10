@@ -22,7 +22,7 @@
 <tr>
   <td>Build Status</td>
   <td>
-    <a href="https://travis-ci.com/BlueBrain/atlas_alignment">
+    <a href="https://github.com/BlueBrain/atlas_alignment/actions?query=workflow%3A%22ci+testing%22+branch%3Amaster">
     <img src="https://img.shields.io/github/workflow/status/BlueBrain/atlas_alignment/ci%20testing/master" alt="Build status" />    
     </a>
   </td>

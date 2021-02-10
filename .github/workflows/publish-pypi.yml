@@ -3,6 +3,7 @@ name: pypi publishing
 
 on:
   push:
+    branches: gh_actions_fix
     tags:
     - '*'
 

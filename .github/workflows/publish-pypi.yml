@@ -39,7 +39,7 @@ jobs:
 
       - name: echo
         run: |
-          echo "Hello World"
+          echo $GITHUB_REF
 
 
 

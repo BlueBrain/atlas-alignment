@@ -3,6 +3,8 @@ name: ci testing
 
 on:
   push:
+    branches: master
+  pull_request:
 
 
 jobs:

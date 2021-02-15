@@ -20,6 +20,14 @@
 </td>
 </tr>
 <tr>
+  <td>Data</td>
+  <td>
+    <a href="https://zenodo.org/record/4541446#.YCqGFc9Kg4g">
+    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4541446.svg" alt="Data" />
+    </a>
+</td>
+</tr>
+<tr>
   <td>Build Status</td>
   <td>
     <a href="https://github.com/BlueBrain/atlas_alignment/actions?query=workflow%3A%22ci+testing%22+branch%3Amaster">
@@ -99,6 +107,10 @@ sure to read the
 [Building Blocks](https://atlas-alignment.readthedocs.io/en/latest/source/building_blocks.html) 
 section of the docs to understand the basics.
 
+### Data
+You can find example data on [Zenodo](https://zenodo.org/record/4541446#.YCqGFc9Kg4g).
+Unzip the files to `~/.atlalign/` folder so that you can use the `data.py` module
+without manual specification of paths.
 
 ### Funding & Acknowledgment
 This project was supported by funding to the Blue Brain 

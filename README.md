@@ -109,7 +109,7 @@ section of the docs to understand the basics.
 
 ### Data
 You can find example data on [Zenodo](https://zenodo.org/record/4541446#.YCqGFc9Kg4g).
-Unzip the files to `~/.atlalign` so that you can use the `data.py` module
+Unzip the files to `~/.atlalign/` folder so that you can use the `data.py` module
 without manual specification of paths.
 
 ### Funding & Acknowledgment

@@ -61,8 +61,8 @@ def main(argv=None):
     swap = args.swap
 
     # Imports
-    from atlalign.data import nissl_volume
-    from atlalign.label import load_image, run_GUI
+    from atlalign.label.io import nissl_volume
+    from atlalign.label.new_GUI import load_image, run_GUI
 
     output_path = pathlib.Path(output_path)
     output_path.mkdir(exist_ok=True, parents=True)

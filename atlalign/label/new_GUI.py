@@ -1,28 +1,26 @@
 """Graphical User Interface for manual registration."""
-
-"""
-    The package atlalign is a tool for registration of 2D images.
-
-    Copyright (C) 2021 EPFL/Blue Brain Project
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-
+# The package atlalign is a tool for registration of 2D images.
+#
+# Copyright (C) 2021 EPFL/Blue Brain Project
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import json
 import os
 import pickle
 import warnings
+import sys
+import textwrap
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from collections import deque
 from copy import deepcopy
@@ -30,6 +28,7 @@ from datetime import datetime
 from pathlib import Path
 
 import cv2
+import matplotlib as mpl
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 import numpy as np
@@ -43,7 +42,7 @@ from atlalign.data import nissl_volume
 from atlalign.visualization import create_grid
 
 
-def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
+def run_gui(img_ref, img_mov, mode="ref2mov", title=""):
     """Graphical user interface for manual labeling.
 
     Notes
@@ -88,7 +87,7 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
 
     """
     if not img_ref.shape == img_mov.shape:
-        raise ValueError("The fixed and moving image need to have the same shape.")
+        raise ValueError(f"The fixed and moving image need to have the same shape. {img_ref.shape} vs. {img_mov.shape}")
 
     if not (img_ref.dtype == np.float32 and img_mov.dtype == np.float32):
         raise TypeError("Only works with float32 dtype")
@@ -133,7 +132,6 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
         """
 
         def __init__(self):
-
             # Save internally original images (immutable)
             self.img_ref_ = img_ref.copy()
             self.img_mov_ = img_mov.copy()
@@ -165,6 +163,7 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
 
             self.alpha_ref = 0.8
             self.alpha_movreg = 0.5
+            self.alpha_movreg_prev = 0.0
 
             # interpolation related
             self.interpolation_methods = ["griddata", "rbf"]
@@ -184,15 +183,44 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
             self.kernel_prev = self.kernel
 
             # Visual
-            self.marker_ref = "o"
-            self.marker_mov = "*"
+            self.marker_ref = "."
+            self.marker_mov = "+"
             self.marker_size_ref = 7 ** 2
-            self.marker_size_mov = 11 ** 2
+            self.marker_size_mov = 7 ** 2
 
             self.all_colors = deque(
                 ["red", "green", "blue", "yellow", "orange", "pink", "brown", "cyan"]
             )  # left start
             # self.all_colors = deque([cm.tab20(i / 100) for i in range(0, 100, 5)])
+
+            # Attributes
+            self.keypoints = {}  # # (x_ref, y_ref) -> (x_inp, y_inp)
+            self.keypoints_prev = {}
+            self.colors = {}  # (x_ref, y_ref) -> color ()
+
+            self.epsilon = 3
+            self.symmetric_registration = False
+
+            # Modify keyboard shortcuts
+            self.key_pan = "a"
+            self.key_zoom_rect = "s"
+            self.key_delete_ref_point = "d"
+            self.key_reset_zoom = "f"
+            self.key_swap_alpha = " "
+            # Remove all default key bindings to avoid clashes
+            for key, value in mpl.rcParams.items():
+                if key.startswith("keymap."):
+                    value.clear()
+            mpl.rcParams["keymap.pan"] = [self.key_pan]
+            mpl.rcParams["keymap.zoom"] = [self.key_zoom_rect]
+            mpl.rcParams["keymap.home"] = [self.key_reset_zoom]
+            self.key_descriptions = {
+                self.key_pan: "pan",
+                self.key_zoom_rect: "zoom rectangle",
+                self.key_reset_zoom: "reset zoom",
+                self.key_delete_ref_point: "delete ref point",
+                self.key_swap_alpha: "toggle alpha",
+            }
 
             # Axis
             self.fig, (self.ax, self.ax_reg) = plt.subplots(1, 2, figsize=(20, 20))
@@ -205,73 +233,78 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
 
             self._define_widgets()
 
-            # Attributes
-            self.keypoints = {}  # # (x_ref, y_ref) -> (x_inp, y_inp)
-            self.keypoints_prev = {}
-            self.colors = {}  # (x_ref, y_ref) -> color ()
+            # Initialize plots
+            self.draw()
 
-            self.epsilon = 3
+        def _make_buttons(self, y_pos):
+            width, height = 0.15, 0.03
 
-            # Initilize p
-            self._update_plots()
-
-        def _define_widgets(self):
-            """Define all widgets."""
             # toggle reset
             self.reset_button = Button(
-                plt.axes([0.20, 0.01, 0.1, 0.03]),
+                plt.axes([0.01, y_pos, width, height]),
                 "Reset",
                 # color=[0.0, 1.0, 0.0] if self.ref_first else [1, 0, 0],
-                hovercolor=None,
             )
-
             def on_clicked(*args, **kwargs):
                 self.keypoints = {}
                 self._update_plots()
-
             self.reset_button.on_clicked(on_clicked)
+
+            # Toggle symmetric registration
+            self.toggle_symmetric_reg = Button(
+                plt.axes([0.20, y_pos, width, height]),
+                "",
+                # color=[0.0, 1.0, 0.0] if self.ref_first else [1, 0, 0],
+            )
+            def set_symmetric_reg_label():
+                status_str = "[On]" if self.symmetric_registration else "[Off]"
+                self.toggle_symmetric_reg.label.set_text(
+                    f"Symmetric Registration {status_str}"
+                )
+            def on_clicked(_event):
+                self.symmetric_registration = not self.symmetric_registration
+                set_symmetric_reg_label()
+                # No no key points, so we have to force the redraw
+                self._update_plots(force=True)
+            set_symmetric_reg_label()
+            self.toggle_symmetric_reg.on_clicked(on_clicked)
 
             # toggle ref_first
             self.ref_first_button = Button(
-                plt.axes([0.4, 0.01, 0.1, 0.03]),
+                plt.axes([0.4, y_pos, width, height]),
                 "Change order",
                 # color=[0.0, 1.0, 0.0] if self.ref_first else [1, 0, 0],
-                hovercolor=None,
             )
-
             def on_clicked(*args, **kwargs):
                 self.ref_first = not self.ref_first
                 self._update_plots()
-
             self.ref_first_button.on_clicked(on_clicked)
 
             # toggle show_arrows
             self.show_arrows_button = Button(
-                plt.axes([0.6, 0.01, 0.1, 0.03]),
+                plt.axes([0.6, y_pos, width, height]),
                 "Show arrows",
                 # color=[0.0, 1.0, 0.0] if self.ref_first else [1, 0, 0],
-                hovercolor=None,
             )
-
             def on_clicked(*args, **kwargs):
                 self.show_arrows = not self.show_arrows
                 self._update_plots()
-
             self.show_arrows_button.on_clicked(on_clicked)
 
             # toggle show_grid
             self.show_grid_button = Button(
-                plt.axes([0.8, 0.01, 0.1, 0.03]),
+                plt.axes([0.8, y_pos, width, height]),
                 "Show grid",
                 # color=[0.0, 1.0, 0.0] if self.ref_first else [1, 0, 0],
-                hovercolor=None,
             )
-
             def on_clicked(*args, **kwargs):
                 self.show_grid = not self.show_grid
                 self._update_plots()
-
             self.show_grid_button.on_clicked(on_clicked)
+
+        def _define_widgets(self):
+            """Define all widgets."""
+            self._make_buttons(y_pos=0.01)
 
             # threshold ref
             axcolor = "lightgoldenrodyellow"
@@ -407,10 +440,10 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
 
             # Transform quality
             axcolor = "lightgoldenrodyellow"
-            self.rax_quality = plt.axes([0.45, 0.8, 0.10, 0.1], facecolor=axcolor)
+            self.rax_quality = plt.axes([0.45, 0.8, 0.10, 0.05], facecolor=axcolor)
             self.rax_quality.set_axis_off()
 
-        def _update_plots(self):
+        def _update_plots(self, force=False):
             """Render the entire figure with the most recent parameters."""
             new_kps = self.keypoints != self.keypoints_prev
             new_ip = (
@@ -421,7 +454,7 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
                 [k is None or v is None for k, v in self.keypoints.items()]
             )
 
-            if (new_kps and is_complete) or new_ip:
+            if (new_kps and is_complete) or new_ip or force:
                 self.keypoints_prev = deepcopy(self.keypoints)
 
                 self.interpolation_method_prev = self.interpolation_method
@@ -435,13 +468,21 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
                     self.img_reg = self.img_mov_.copy()
 
                 else:
-
                     # Interpolation preparation
                     all_kps = [
                         (k, v)
                         for k, v in self.keypoints.items()
                         if k is not None and v is not None
                     ]
+
+                    # If symmetric registration, then add mirrored points
+                    if self.symmetric_registration:
+                        _, width = self.img_ref_.shape[:2]
+                        mirrored_kps = [
+                            ((width - x1, y1), (width - x2, y2))
+                            for (x1, y1), (x2, y2) in all_kps
+                        ]
+                        all_kps.extend(mirrored_kps)
 
                     coords_ref = [x[0] for x in all_kps]
                     coords_inp = [x[1] for x in all_kps]
@@ -486,6 +527,16 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
                     # Update warped image
                     self.img_reg = self.df.warp(self.img_mov_.copy())
 
+            # Redraw figure while keeping the zoom/limits
+            ax_xlim = self.ax.get_xlim()
+            ax_ylim = self.ax.get_ylim()
+            ax_reg_xlim = self.ax_reg.get_xlim()
+            ax_reg_ylim = self.ax_reg.get_ylim()
+            self.draw()
+            self.ax.set(xlim=ax_xlim, ylim=ax_ylim)
+            self.ax_reg.set(xlim=ax_reg_xlim, ylim=ax_reg_ylim)
+
+        def draw(self):
             self.ax.cla()
             self.ax_reg.cla()
 
@@ -495,16 +546,18 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
             perc_good = np.sum(self.df.jacobian > 0) / np.prod(self.df.shape)
             average_disp = self.df.average_displacement
 
+            key_shortcuts = ", ".join(
+                f"{description}: {key!r}"
+                for key, description in self.key_descriptions.items()
+            )
             self.rax_quality.set_title(
-                "Transform quality: {:.2%}\nAverage displacement: {:.2f}".format(
-                    perc_good, average_disp
-                )
+                f"Transform quality: {perc_good:.2%}\n"
+                f"Average displacement: {average_disp:.2f}\n\n"
+                f"(Key shortcuts: {key_shortcuts})"
             )
 
             self.ax.set_title(
-                "Reference vs Moving (Interactive), ref: {}, mov: {}".format(
-                    n_ref, n_mov
-                )
+                f"Reference vs Moving (Interactive), ref: {n_ref}, mov: {n_mov}"
             )
             self.ax_reg.set_title(
                 "Reference vs Registered" if not self.show_grid else "Warping Grid"
@@ -557,7 +610,7 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
                         img_ref, cmap=self.cmap_ref, alpha=self.alpha_ref
                     )
 
-            # Scatterplots
+            # Scatter plots
             refs_movs = [
                 (k, v) for k, v in self.keypoints.items()
             ]  # THIS SETS THE ORDER
@@ -637,90 +690,87 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
                         y_del[i],
                         color=self.colors[(x_pos[i], y_pos[i])],
                     )
-
             self.ax.legend(handles=[ref_label, mov_label])
+            self.fig.canvas.draw_idle()
 
-            plt.draw()
+        def on_click(self, event):
+            """Take action on a click.
 
-        def run(self):
-            """Run the GUI."""
+            Parameters
+            ----------
+            event :  matplotlib.backend_bases.LocationEvent
+                The location event.
 
-            def on_click(event):
-                """Take action on a click.
+            Notes
+            -----
+            We can use this to extract x and y coordinate of the click.
+            """
+            # Can be [None, "ZOOM", "PAN"], don't handle clicks if
+            # zooming or panning
+            if self.ax.get_navigate_mode() is not None:
+                return
+            # Only self.ax are interactive axes
+            if event.inaxes != self.ax:
+                return
 
-                Parameters
-                ----------
-                event :  matplotlib.backend_bases.Event
-                    In this case this is  matplotlib.backend_bases.LocationEvent.
+            # Get coordinates of the click
+            x, y = int(event.xdata), int(event.ydata)
 
-                Notes
-                -----
-                We can use this to extract x and y coordinate of the click.
+            # Clean axis (The logic is to draw everything from scratch)
+            new_pair_mode = np.all(
+                [
+                    x is not None
+                    for x in (
+                        self.keypoints.values()
+                        if mode == "ref2mov"
+                        else self.keypoints.keys()
+                    )
+                ]
+            )
 
-                """
-                # Get coordinates of the click
-                if event.inaxes != self.ax:  # only self.ax is an interactive axes
-                    return
+            if new_pair_mode:
+                c = self.all_colors[0]
+                self.all_colors.rotate()
 
-                x, y = int(event.xdata), int(event.ydata)
-                print("x = %d, y = %d" % (x, y))
-
-                # Clean axis (The logic is to draw everything from scratch)
-
-                new_pair_mode = np.all(
-                    [
-                        x is not None
-                        for x in (
-                            self.keypoints.values()
-                            if mode == "ref2mov"
-                            else self.keypoints.keys()
-                        )
-                    ]
-                )
-
-                if new_pair_mode:
-                    c = self.all_colors.popleft()
-                    self.all_colors.append(c)
-
-                    if mode == "ref2mov":
-                        self.keypoints[(x, y)] = None
-                        self.colors[(x, y)] = c
-                    else:
-                        self.keypoints[None] = (x, y)
-                        self.colors[None] = c
-
+                if mode == "ref2mov":
+                    self.keypoints[(x, y)] = None
+                    self.colors[(x, y)] = c
                 else:
-                    if mode == "ref2mov":
-                        self.keypoints[
-                            [k for k, v in self.keypoints.items() if v is None][0]
-                        ] = (x, y)
-                    else:
-                        self.keypoints[(x, y)] = self.keypoints[None]
-                        del self.keypoints[None]
-                        self.colors[(x, y)] = self.colors[None]
-                        del self.colors[None]
+                    self.keypoints[None] = (x, y)
+                    self.colors[None] = c
 
-                self._update_plots()
+            else:
+                if mode == "ref2mov":
+                    self.keypoints[
+                        [k for k, v in self.keypoints.items() if v is None][0]
+                    ] = (x, y)
+                else:
+                    self.keypoints[(x, y)] = self.keypoints[None]
+                    del self.keypoints[None]
+                    self.colors[(x, y)] = self.colors[None]
+                    del self.colors[None]
 
-            def on_press(event):
-                """Take action on a key press.
+            self._update_plots()
 
-                Parameters
-                ----------
-                event :  matplotlib.backend_bases.Event
-                    In this case this is  matplotlib.backend_bases.LocationEvent.
+        def on_press(self, event):
+            """Take action on a key press.
 
-                """
-                if event.key is None or ord(event.key) != 32:
-                    return
+            Parameters
+            ----------
+            event :  matplotlib.backend_bases.KeyEvent
+                The key event fired.
+            """
+            if event.key is None:
+                return
 
+            key_pressed = event.key.lower()
+            if key_pressed == self.key_delete_ref_point:
+                print("Handling delete")
                 if event.inaxes != self.ax:
                     return
 
                 x, y = int(event.xdata), int(event.ydata)
-
                 # You can only remove reference points
-
                 for diff_x in range(-self.epsilon, self.epsilon):
                     for diff_y in range(-self.epsilon, self.epsilon):
                         if (x + diff_x, y + diff_y) in self.keypoints:
@@ -728,27 +778,33 @@ def run_GUI(img_ref, img_mov, mode="ref2mov", title=""):
                             print("Deleted {}".format((x + diff_x, y + diff_y)))
                             self._update_plots()
                             return
+            elif key_pressed == self.key_swap_alpha:
+                self.alpha_movreg, self.alpha_movreg_prev = self.alpha_movreg_prev, self.alpha_movreg
+                self.alpha_movreg_slider.set_val(self.alpha_movreg)
 
-            self.fig.canvas.mpl_connect("button_press_event", on_click)
-            self.fig.canvas.mpl_connect("key_press_event", on_press)
+        def run(self):
+            """Run the GUI."""
+            # Register mouse and keyboard event callbacks
+            self.fig.canvas.mpl_connect("button_press_event", self.on_click)
+            self.fig.canvas.mpl_connect("key_press_event", self.on_press)
 
+            # Show the plot window
             plt.show()
 
-    helper_inst = HelperGlobal()
-    helper_inst.run()
+    helper = HelperGlobal()
+    helper.run()
 
     return (
-        helper_inst.df,
-        helper_inst.keypoints,
-        helper_inst.img_reg,
-        helper_inst.interpolation_method,
-        helper_inst.kernel,
+        helper.df,
+        helper.keypoints,
+        helper.img_reg,
+        helper.interpolation_method,
+        helper.kernel,
     )  # noqa
 
 
-if __name__ == "__main__":
+def main(argv=None):
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-
     parser.add_argument(
         "-f", "--fixed", help="Fixed image section (0-527)", type=int, default=300
     )
@@ -759,7 +815,6 @@ if __name__ == "__main__":
         type=str,
         default="examples/data/moving.png",
     )
-
     parser.add_argument(
         "-p",
         "--path",
@@ -768,7 +823,6 @@ if __name__ == "__main__":
         default="{}/.atlalign/label/".format(str(Path.home())),
     )
     parser.add_argument("-t", "--title", help="Title", type=str, default="")
-
     args = parser.parse_args()
 
     fixed = args.fixed
@@ -800,7 +854,7 @@ if __name__ == "__main__":
 
     # Run GUI
     start_time = datetime.now()
-    df, keypoints, img_reg, interpolation_method, kernel = run_GUI(
+    df, keypoints, img_reg, interpolation_method, kernel = run_gui(
         img_ref,
         img_mov,
         mode="mov2ref",
@@ -843,3 +897,7 @@ if __name__ == "__main__":
     # Success txt
     with open("{}success.txt".format(path), "w"):
         pass
+
+
+if __name__ == "__main__":
+    sys.exit(main())

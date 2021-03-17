@@ -1,24 +1,20 @@
 """Command line interface implementation."""
-
-"""
-    The package atlalign is a tool for registration of 2D images.
-
-    Copyright (C) 2021 EPFL/Blue Brain Project
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-
+# The package atlalign is a tool for registration of 2D images.
+#
+# Copyright (C) 2021 EPFL/Blue Brain Project
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
 import pathlib
 import sys
@@ -61,8 +57,9 @@ def main(argv=None):
     swap = args.swap
 
     # Imports
-    from atlalign.label.io import nissl_volume
-    from atlalign.label.new_GUI import load_image, run_GUI
+    from atlalign.data import nissl_volume
+    from atlalign.label.io import load_image
+    from atlalign.label.new_GUI import run_gui
 
     output_path = pathlib.Path(output_path)
     output_path.mkdir(exist_ok=True, parents=True)
@@ -71,14 +68,12 @@ def main(argv=None):
         img_ref = nissl_volume()[int(ref), ..., 0]
     else:
         img_ref_path = pathlib.Path(ref)
-        img_ref = load_image(img_ref_path)
+        img_ref = load_image(img_ref_path, output_dtype="float32")
 
     img_mov_path = pathlib.Path(mov)
-    img_mov = load_image(
-        img_mov_path, output_channels=1, keep_last=False, output_dtype="float32"
-    )
+    img_mov = load_image(img_mov_path, output_dtype="float32")
 
-    result_df = run_GUI(img_ref, img_mov, mode="mov2ref" if swap else "ref2mov")[0]
+    result_df = run_gui(img_ref, img_mov, mode="mov2ref" if swap else "ref2mov")[0]
 
     img_reg = result_df.warp(img_mov)
 

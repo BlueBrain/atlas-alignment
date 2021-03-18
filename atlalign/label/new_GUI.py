@@ -18,14 +18,13 @@
 import json
 import os
 import pickle
-import warnings
 import sys
+import warnings
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from collections import deque
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
-
 
 import matplotlib as mpl
 import matplotlib.lines as mlines
@@ -82,6 +81,7 @@ class HelperGlobal:
         A parameter that determines the rectangle around a clicked point during deletions (spacebar)
         The higher this parameter the less precise you need to be when trying to delete a reference keypoint.
     """
+
     def __init__(self, img_ref, img_mov, mode, title):
         self.mode = mode
         self.title = title
@@ -188,7 +188,7 @@ class HelperGlobal:
         self._define_widgets()
 
         # Initialize plots
-        self.draw()
+        self._draw()
 
     def _make_buttons(self, y_pos):
         width, height = 0.15, 0.03
@@ -382,9 +382,7 @@ class HelperGlobal:
         )
 
         def on_clicked(*args, **kwargs):
-            self.interpolation_method = (
-                self.interpolation_method_radio.value_selected
-            )
+            self.interpolation_method = self.interpolation_method_radio.value_selected
             self._update_plots()
 
         self.interpolation_method_radio.on_clicked(on_clicked)
@@ -412,8 +410,8 @@ class HelperGlobal:
         """Render the entire figure with the most recent parameters."""
         new_kps = self.keypoints != self.keypoints_prev
         new_ip = (
-                self.interpolation_method != self.interpolation_method_prev
-                or self.kernel != self.kernel_prev
+            self.interpolation_method != self.interpolation_method_prev
+            or self.kernel != self.kernel_prev
         )
         is_complete = not np.any(
             [k is None or v is None for k, v in self.keypoints.items()]
@@ -497,11 +495,11 @@ class HelperGlobal:
         ax_ylim = self.ax.get_ylim()
         ax_reg_xlim = self.ax_reg.get_xlim()
         ax_reg_ylim = self.ax_reg.get_ylim()
-        self.draw()
+        self._draw()
         self.ax.set(xlim=ax_xlim, ylim=ax_ylim)
         self.ax_reg.set(xlim=ax_reg_xlim, ylim=ax_reg_ylim)
 
-    def draw(self):
+    def _draw(self):
         self.ax.cla()
         self.ax_reg.cla()
 
@@ -553,9 +551,7 @@ class HelperGlobal:
                 self.ax_reg.imshow(warped_grid)
 
             else:
-                self.ax_reg.imshow(
-                    img_ref, cmap=self.cmap_ref, alpha=self.alpha_ref
-                )
+                self.ax_reg.imshow(img_ref, cmap=self.cmap_ref, alpha=self.alpha_ref)
                 self.ax_reg.imshow(
                     img_reg, cmap=self.cmap_movreg, alpha=self.alpha_movreg
                 )
@@ -571,14 +567,10 @@ class HelperGlobal:
                 self.ax_reg.imshow(
                     img_reg, cmap=self.cmap_movreg, alpha=self.alpha_movreg
                 )
-                self.ax_reg.imshow(
-                    img_ref, cmap=self.cmap_ref, alpha=self.alpha_ref
-                )
+                self.ax_reg.imshow(img_ref, cmap=self.cmap_ref, alpha=self.alpha_ref)
 
         # Scatter plots
-        refs_movs = [
-            (k, v) for k, v in self.keypoints.items()
-        ]  # THIS SETS THE ORDER
+        refs_movs = [(k, v) for k, v in self.keypoints.items()]  # THIS SETS THE ORDER
 
         refs_with_none = [x[0] for x in refs_movs]
         movs_with_none = [x[1] for x in refs_movs]
@@ -640,12 +632,8 @@ class HelperGlobal:
             x_del = [x[0] for x in deltas]
             y_del = [x[1] for x in deltas]
 
-            x_pos = [
-                r[0] for r, m in refs_movs if (r is not None and m is not None)
-            ]
-            y_pos = [
-                r[1] for r, m in refs_movs if (r is not None and m is not None)
-            ]
+            x_pos = [r[0] for r, m in refs_movs if (r is not None and m is not None)]
+            y_pos = [r[1] for r, m in refs_movs if (r is not None and m is not None)]
 
             for i in range(len(deltas)):
                 self.ax.arrow(
@@ -686,10 +674,10 @@ class HelperGlobal:
             [
                 x is not None
                 for x in (
-                self.keypoints.values()
-                if self.mode == "ref2mov"
-                else self.keypoints.keys()
-            )
+                    self.keypoints.values()
+                    if self.mode == "ref2mov"
+                    else self.keypoints.keys()
+                )
             ]
         )
 
@@ -744,7 +732,10 @@ class HelperGlobal:
                         self._update_plots()
                         return
         elif key_pressed == self.key_swap_alpha:
-            self.alpha_movreg, self.alpha_movreg_prev = self.alpha_movreg_prev, self.alpha_movreg
+            self.alpha_movreg, self.alpha_movreg_prev = (
+                self.alpha_movreg_prev,
+                self.alpha_movreg,
+            )
             self.alpha_movreg_slider.set_val(self.alpha_movreg)
 
     def run(self):
@@ -822,6 +813,13 @@ def run_gui(img_ref, img_mov, mode="ref2mov", title=""):
 
 
 def main(argv=None):
+    """Run the registration GUI entrypoint.
+
+    Parameters
+    ----------
+    argv : iterable
+        The command line arguments.
+    """
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         "-f", "--fixed", help="Fixed image section (0-527)", type=int, default=300
@@ -853,7 +851,7 @@ def main(argv=None):
 
     # Get moving image
     print(moving)
-    img_mov_ = cv2.imread(moving, 0)
+    # img_mov_ = cv2.imread(moving, 0)
     img_mov = img_as_float32(cv2.imread(moving, 0))
 
     # Check folder exists
@@ -872,7 +870,14 @@ def main(argv=None):
 
     # Run GUI
     start_time = datetime.now()
-    df, keypoints, symmetric_registration, img_reg, interpolation_method, kernel = run_gui(
+    (
+        df,
+        keypoints,
+        symmetric_registration,
+        img_reg,
+        interpolation_method,
+        kernel,
+    ) = run_gui(
         img_ref,
         img_mov,
         mode="mov2ref",

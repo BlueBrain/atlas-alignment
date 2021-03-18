@@ -70,11 +70,14 @@ def main(argv=None):
     img_mov_path = pathlib.Path(args.mov)
     img_mov = load_image(img_mov_path, output_dtype="float32")
 
-    result_df, keypoints, symmetric_registration, img_reg, interpolation_method, kernel = run_gui(
-        img_ref,
-        img_mov,
-        mode="mov2ref" if args.swap else "ref2mov"
-    )
+    (
+        result_df,
+        keypoints,
+        symmetric_registration,
+        img_reg,
+        interpolation_method,
+        kernel,
+    ) = run_gui(img_ref, img_mov, mode="mov2ref" if args.swap else "ref2mov")
 
     # Dump results and metadata to disk
     result_df.save(output_path / "df.npy")

@@ -96,7 +96,7 @@ class DisplacementField:
         approach : str, {'affine', 'affine_simple', 'control_points', 'identity', 'microsoft', 'paper', 'patch_shift'}
             What approach to use for generating the DVF.
 
-        kwargs : dict
+        kwargs
             Additional parameters that are passed into the the given approach function.
 
         Returns

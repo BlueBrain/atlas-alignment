@@ -26,11 +26,12 @@ from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 
-import cv2
+
 import matplotlib as mpl
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 import numpy as np
+from cv2 import cv2
 from matplotlib.widgets import Button, RadioButtons, Slider
 from skimage.color import gray2rgb
 from skimage.exposure import equalize_hist
@@ -56,14 +57,11 @@ def run_gui(img_ref, img_mov, mode="ref2mov", title=""):
     ----------
     img_ref : np.ndaray
         Reference image. Needs to be dtype == np.uint8.
-
     img_mov : np.ndarray
         Input image. Needs to be dtype == np.uint8 and the same shape as `img_ref`.
-
     mode : str, {'ref2mov', 'mov2ref'}
         If 'ref2mov' then the first point should be in the reference image and the other point in the moving one.
         For 'mov2ref' its vice versa.
-
     title : str,
         Additional title of the figure.
 
@@ -71,19 +69,19 @@ def run_gui(img_ref, img_mov, mode="ref2mov", title=""):
     -------
     df : DisplacementField
         Displacement field corresponding to the last change before closing the window of the GUI.
-
     keypoints : dict
         Dictionary of keypoints.
-
+    symmetric_registration : bool
+        Whether or not the registration was symmetrized. If true then all the
+        returned keypoints should be mirrored across a vertical line through
+        the image. This can be done by setting x => (width - x) for all
+        keypoints.
     img_reg : np.ndarray
         Registered image.
-
     interpolation_method : str
         Interpolation method
-
     kernel : str
         Kernel.
-
     """
     if not img_ref.shape == img_mov.shape:
         raise ValueError(f"The fixed and moving image need to have the same shape. {img_ref.shape} vs. {img_mov.shape}")
@@ -796,6 +794,7 @@ def run_gui(img_ref, img_mov, mode="ref2mov", title=""):
     return (
         helper.df,
         helper.keypoints,
+        helper.symmetric_registration,
         helper.img_reg,
         helper.interpolation_method,
         helper.kernel,
@@ -822,7 +821,7 @@ def main(argv=None):
         default="{}/.atlalign/label/".format(str(Path.home())),
     )
     parser.add_argument("-t", "--title", help="Title", type=str, default="")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     fixed = args.fixed
     moving = args.moving
@@ -853,7 +852,7 @@ def main(argv=None):
 
     # Run GUI
     start_time = datetime.now()
-    df, keypoints, img_reg, interpolation_method, kernel = run_gui(
+    df, keypoints, symmetric_registration, img_reg, interpolation_method, kernel = run_gui(
         img_ref,
         img_mov,
         mode="mov2ref",

@@ -87,30 +87,28 @@ def main(argv=None):
     plt.imsave(output_path / "img_reg.png", img_reg)
     plt.imsave(output_path / "img_ref.png", img_ref)
     plt.imsave(output_path / "img_mov.png", img_mov)
-    with open(output_path / "keypoints.csv", "w") as file:
-        with redirect_stdout(file):
-            if args.swap:
-                print("mov x,mov y,ref x,ref y")
-            else:
-                print("ref x,ref y,mov x,mov y")
-            for (x1, y1), (x2, y2) in keypoints.items():
-                print(f"{x1},{y1},{x2},{y2}")
-    with open(output_path / "info.log", "w") as file:
-        with redirect_stdout(file):
-            print("Timestamp :", datetime.datetime.now().ctime())
-            print("")
-            print("Parameters")
-            print("----------")
-            print("ref         :", args.ref)
-            print("mov         :", args.mov)
-            print("output_path :", output_path.resolve())
-            print("swap        :", args.swap)
-            print()
-            print("Interpolation")
-            print("-------------")
-            print("Symmetric :", symmetric_registration)
-            print("Method    :", interpolation_method)
-            print("Kernel    :", kernel)
+    with open(output_path / "keypoints.csv", "w") as file, redirect_stdout(file):
+        if args.swap:
+            print("mov x,mov y,ref x,ref y")
+        else:
+            print("ref x,ref y,mov x,mov y")
+        for (x1, y1), (x2, y2) in keypoints.items():
+            print(f"{x1},{y1},{x2},{y2}")
+    with open(output_path / "info.log", "w") as file, redirect_stdout(file):
+        print("Timestamp :", datetime.datetime.now().ctime())
+        print("")
+        print("Parameters")
+        print("----------")
+        print("ref         :", args.ref)
+        print("mov         :", args.mov)
+        print("output_path :", output_path.resolve())
+        print("swap        :", args.swap)
+        print()
+        print("Interpolation")
+        print("-------------")
+        print("Symmetric :", symmetric_registration)
+        print("Method    :", interpolation_method)
+        print("Kernel    :", kernel)
     print("Results were saved to", output_path.resolve())
 
 

@@ -20,6 +20,13 @@ atlalign.label.io module
    :undoc-members:
    :show-inheritance:
 
+atlalign.label.new\_GUI module
+------------------------------
+
+.. automodule:: atlalign.label.new_GUI
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------

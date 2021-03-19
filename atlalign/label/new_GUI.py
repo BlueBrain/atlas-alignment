@@ -15,29 +15,17 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import json
-import os
-import pickle
-import sys
-import warnings
-from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from collections import deque
 from copy import deepcopy
-from datetime import datetime
-from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 import numpy as np
-from cv2 import cv2
 from matplotlib.widgets import Button, RadioButtons, Slider
 from skimage.color import gray2rgb
-from skimage.exposure import equalize_hist
-from skimage.util import img_as_float32
 
 from atlalign.base import DisplacementField
-from atlalign.data import nissl_volume
 from atlalign.visualization import create_grid
 
 

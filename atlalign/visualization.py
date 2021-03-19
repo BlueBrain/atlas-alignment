@@ -236,6 +236,7 @@ def generate_df_plots(df_true, df_pred, filepath=None, figsize=(15, 15)):
     # The import is placed here in order to avoid the tensorflow import coming
     # from atlalign.metrics in the module scope (it's very slow)
     import seaborn as sns
+
     from atlalign.metrics import angular_error_of
 
     plt.ioff()

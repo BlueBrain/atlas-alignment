@@ -97,7 +97,7 @@ class HelperGlobal:
         self.cmap_movreg = "hot"  # needs index in the colormaps list
 
         self.th_ref = 10 / 255
-        self.th_movreg = 100 / 255
+        self.th_movreg = 10 / 255
 
         self.ref_first = True
         self.show_grid = False

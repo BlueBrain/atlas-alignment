@@ -48,6 +48,13 @@ def main(argv=None):
         help="Swap to the moving to reference mode.",
         action="store_true",
     )
+    parser.add_argument(
+        "-g",
+        "--force-grayscale",
+        default=False,
+        help="Force the images to be grayscale. Convert RGB to grayscale if necessary.",
+        action="store_true",
+    )
     args = parser.parse_args(argv)
 
     # Imports
@@ -58,18 +65,25 @@ def main(argv=None):
     from atlalign.label.io import load_image
     from atlalign.label.new_GUI import run_gui
 
-    output_path = pathlib.Path(args.output_path)
-    output_path.mkdir(exist_ok=True, parents=True)
-
+    # Read input images
+    output_channels = 1 if args.force_grayscale else None
     if args.ref.isdigit():
         img_ref = nissl_volume()[int(args.ref), ..., 0]
     else:
         img_ref_path = pathlib.Path(args.ref)
-        img_ref = load_image(img_ref_path, output_dtype="float32")
-
+        img_ref = load_image(
+            img_ref_path,
+            output_channels=output_channels,
+            output_dtype="float32"
+        )
     img_mov_path = pathlib.Path(args.mov)
-    img_mov = load_image(img_mov_path, output_dtype="float32")
+    img_mov = load_image(
+        img_mov_path,
+        output_channels=output_channels,
+        output_dtype="float32",
+    )
 
+    # Launch GUI
     (
         result_df,
         keypoints,
@@ -80,6 +94,9 @@ def main(argv=None):
     ) = run_gui(img_ref, img_mov, mode="mov2ref" if args.swap else "ref2mov")
 
     # Dump results and metadata to disk
+    output_path = pathlib.Path(args.output_path)
+    output_path.mkdir(exist_ok=True, parents=True)
+
     result_df.save(output_path / "df.npy")
     np.save(output_path / "img_reg.npy", img_reg)
     np.save(output_path / "img_ref.npy", img_ref)
@@ -99,10 +116,11 @@ def main(argv=None):
         print("")
         print("Parameters")
         print("----------")
-        print("ref         :", args.ref)
-        print("mov         :", args.mov)
-        print("output_path :", output_path.resolve())
-        print("swap        :", args.swap)
+        print("ref             :", args.ref)
+        print("mov             :", args.mov)
+        print("output_path     :", output_path.resolve())
+        print("swap            :", args.swap)
+        print("force-grayscale :", args.force_grayscale)
         print()
         print("Interpolation")
         print("-------------")

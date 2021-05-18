@@ -1,7 +1,5 @@
 ## Maintainers
-Jan Krepl, Francesco Casalegno
+Jan Krepl, Francesco Casalegno, Emilie Delattre
  
 ## Authors
-Jan Krepl, Francesco Casalegno
- 
-## Contributors
+Jan Krepl, Francesco Casalegno, Emilie Delattre

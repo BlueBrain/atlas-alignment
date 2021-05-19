@@ -635,7 +635,7 @@ class TestImageSimilarityMetrics:
 
     @pytest.mark.parametrize("metric", list(ALL_IMG_METRICS.keys()))
     def test_incorrect_dtype(self, img_grayscale_float, metric):
-        """Test that the type of inputs images has to be float32. If not, raises an exception """
+        """Test that the type of inputs images has to be float32. If not, raises an exception"""
 
         img_grayscale_float64 = img_grayscale_float.astype(np.float64)
 
@@ -664,7 +664,7 @@ class TestImageSimilarityMetrics:
 
     @pytest.mark.parametrize("metric", list(ALL_IMG_METRICS.keys()))
     def test_inconsistent_mask(self, metric):
-        """Test that the dimensions of the mask are consistent. If not, raises an exception """
+        """Test that the dimensions of the mask are consistent. If not, raises an exception"""
 
         img_true = np.zeros((20, 20, 20), dtype="float32")
         img_pred = np.zeros((10, 20, 20), dtype="float32")

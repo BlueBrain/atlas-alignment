@@ -257,7 +257,7 @@ class TestRectangles:
         assert res.dtype == np.float32
 
     def test_full_intensity(self):
-        """ Test that there exists a pixel with a full intensity = 1."""
+        """Test that there exists a pixel with a full intensity = 1."""
 
         shape = (50, 100)
         res = rectangles(10, shape, (20, 30), (10, 50), n_levels=4)

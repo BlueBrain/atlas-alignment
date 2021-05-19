@@ -136,7 +136,7 @@ class TestControlPoints:
     """A collection of tests focused on the control_points approach."""
 
     def test_wrong_inputs_0(self):
-        """ Test that other types then np.ndarray lead to an error"""
+        """Test that other types then np.ndarray lead to an error"""
 
         shape = (40, 50)
         points = "fake"

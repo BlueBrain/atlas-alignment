@@ -17,7 +17,7 @@ brain atlases obtained with ISH gene expression and Nissl stains."""
 
 PYTHON_REQUIRES = "~=3.7.0"
 INSTALL_REQUIRES = [
-    "antspyx==0.2.4",
+    "antspyx==0.2.7",
     "allensdk>=0.16.3",
     "imgaug<0.3",
     "Keras==2.2.4",

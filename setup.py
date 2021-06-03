@@ -28,7 +28,7 @@ INSTALL_REQUIRES = [
     "scikit-image>=0.16.0",
     "scikit-learn>=0.20.2",
     "scipy==1.2.1",
-    "tensorflow<2",
+    "tensorflow",
 ]
 
 setup(

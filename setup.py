@@ -15,7 +15,7 @@ includes both traditional and supervised deep learning models.
 This project originated from the Blue Brain Project efforts on aligning mouse
 brain atlases obtained with ISH gene expression and Nissl stains."""
 
-PYTHON_REQUIRES = "~=3.7.0"
+PYTHON_REQUIRES = ">=3.6.0"
 INSTALL_REQUIRES = [
     "antspyx==0.2.7",
     "allensdk>=0.16.3",

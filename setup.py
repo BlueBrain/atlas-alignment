@@ -25,10 +25,12 @@ INSTALL_REQUIRES = [
     "mlflow",
     "nibabel>=2.4.0",
     "numpy>=1.16.3",
+    "seaborn",
     "scikit-image>=0.16.0",
     "scikit-learn>=0.20.2",
-    "scipy==1.2.1",
-    "tensorflow",
+    "scipy",
+    "tensorflow>=2.5.0",
+    "tensorflow-addons",  # For resampler in atlalign/ml_utils/layers.py
 ]
 
 setup(

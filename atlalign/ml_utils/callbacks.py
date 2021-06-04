@@ -22,9 +22,9 @@
 import pathlib
 
 import h5py
-import keras
 import mlflow
 import pandas as pd
+from tensorflow import keras
 
 from atlalign.data import annotation_volume, segmentation_collapsing_labels
 from atlalign.metrics import evaluate_single

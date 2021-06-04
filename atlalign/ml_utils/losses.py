@@ -19,8 +19,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import keras
-import keras.backend as K
+import tensorflow.keras.backend as K
+from tensorflow import keras
 
 try:
     import lpips_tf
@@ -141,7 +141,7 @@ class NCC:
         cc = cross * cross / (I_var * J_var + self.eps)
 
         # return negative cc.
-        return tf.reduce_mean(cc)
+        return tf.reduce_mean(input_tensor=cc)
 
     def loss(self, I, J):  # noqa
         """Compute loss."""
@@ -269,12 +269,12 @@ class Grad:
     def loss(self, _, y_pred):
         """Compute loss."""
         if self.penalty == "l1":
-            df = [tf.reduce_mean(tf.abs(f)) for f in self._diffs(y_pred)]
+            df = [tf.reduce_mean(input_tensor=tf.abs(f)) for f in self._diffs(y_pred)]
         else:
             assert self.penalty == "l2", (
                 "penalty can only be l1 or l2. Got: %s" % self.penalty
             )
-            df = [tf.reduce_mean(f * f) for f in self._diffs(y_pred)]
+            df = [tf.reduce_mean(input_tensor=f * f) for f in self._diffs(y_pred)]
         return tf.add_n(df) / len(df)
 
 
@@ -310,7 +310,8 @@ def jacobian(_, y_pred):
 
     n_pixels = tf.constant(np.prod(keras.backend.int_shape(det)[1:]), dtype=tf.float32)
     count_artifacts = tf.cast(
-        tf.count_nonzero(tf.greater_equal(-det, 0.0), axis=(1, 2)), dtype=tf.float32
+        tf.math.count_nonzero(tf.greater_equal(-det, 0.0), axis=(1, 2)),
+        dtype=tf.float32,
     )
     perc_artifacts = count_artifacts / n_pixels
 
@@ -394,10 +395,12 @@ def vector_distance(y_true, y_pred):
     diff = y_pred - y_true
 
     vector_distance_per_output = tf.reduce_mean(
-        tf.sqrt(tf.abs(tf.square(diff[..., 0]) + tf.square(diff[..., 1]) + 0.001)),
+        input_tensor=tf.sqrt(
+            tf.abs(tf.square(diff[..., 0]) + tf.square(diff[..., 1]) + 0.001)
+        ),
         axis=0,
     )
-    vector_distance_average = tf.reduce_mean(vector_distance_per_output)
+    vector_distance_average = tf.reduce_mean(input_tensor=vector_distance_per_output)
 
     return vector_distance_average
 
@@ -421,8 +424,8 @@ def mse_po(y_true, y_pred):
     diff = y_pred - y_true
 
     vector_distance_per_output = tf.reduce_mean(
-        tf.square(diff[..., 0]) + tf.square(diff[..., 1]), axis=0
+        input_tensor=tf.square(diff[..., 0]) + tf.square(diff[..., 1]), axis=0
     )
-    vector_distance_average = tf.reduce_mean(vector_distance_per_output)
+    vector_distance_average = tf.reduce_mean(input_tensor=vector_distance_per_output)
 
     return vector_distance_average

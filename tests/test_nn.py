@@ -19,9 +19,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import keras
 import numpy as np
 import pytest
+from tensorflow import keras
 
 from atlalign.nn import supervised_global_model_factory, supervised_model_factory
 

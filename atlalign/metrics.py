@@ -1000,15 +1000,15 @@ def perceptual_loss_img(y_true, y_pred, model="net-lin", net="vgg"):
     y_true = np.stack((y_true,) * 3, axis=-1)
     y_pred = np.stack((y_pred,) * 3, axis=-1)
 
-    image0_ph = tf.placeholder(tf.float32)
-    image1_ph = tf.placeholder(tf.float32)
+    image0_ph = tf.compat.v1.placeholder(tf.float32)
+    image1_ph = tf.compat.v1.placeholder(tf.float32)
 
     distance_t = lpips_tf.lpips(image0_ph, image1_ph, model=model, net=net)
 
-    with tf.Session() as session:
+    with tf.compat.v1.Session() as session:
         pl = session.run(distance_t, feed_dict={image0_ph: y_true, image1_ph: y_pred})
 
-    tf.reset_default_graph()
+    tf.compat.v1.reset_default_graph()
 
     return pl.item()
 

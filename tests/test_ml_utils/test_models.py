@@ -23,9 +23,9 @@ import json
 import pathlib
 from copy import deepcopy
 
-import keras
 import numpy as np
 import pytest
+from tensorflow import keras
 
 from atlalign.ml_utils import (
     ExtractMoving,

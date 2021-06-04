@@ -16,17 +16,17 @@ jobs:
     strategy:
       matrix:
         python-version: [
-          #3.7,
+          3.7,
           3.8,
-          #3.9,
+          3.9,
         ]
         include:
-          #- python-version: 3.7
-          #  tox-env: py37
+          - python-version: 3.7
+            tox-env: py37
           - python-version: 3.8
             tox-env: py38
-          #- python-version: 3.9
-          #  tox-env: py39
+          - python-version: 3.9
+            tox-env: py39
 
     steps:
 

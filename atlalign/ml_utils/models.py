@@ -120,7 +120,7 @@ def save_model(model, path, separate=True, overwrite=True):
         raise ValueError("Please specify a path without extension (folder).")
 
     if not separate:
-        model.save(str(path) + ".h5", overwrite=overwrite)
+        model.save(str(path) + ".h5", overwrite=overwrite, save_format="h5")
 
     else:
         path_architecture = path / (path.stem + ".json")

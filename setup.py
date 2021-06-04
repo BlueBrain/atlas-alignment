@@ -20,7 +20,7 @@ INSTALL_REQUIRES = [
     "antspyx==0.2.7",
     "allensdk>=0.16.3",
     "imgaug<0.3",
-    "Keras==2.2.4",
+    "Keras",
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",

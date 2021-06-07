@@ -18,7 +18,6 @@ brain atlases obtained with ISH gene expression and Nissl stains."""
 PYTHON_REQUIRES = ">=3.6.0"
 INSTALL_REQUIRES = [
     "antspyx==0.2.7",
-    "allensdk>=0.16.3",
     "imgaug<0.3",
     "matplotlib>=3.0.3",
     "mlflow",
@@ -28,6 +27,7 @@ INSTALL_REQUIRES = [
     "scikit-image>=0.16.0",
     "scikit-learn>=0.20.2",
     "scipy",
+    "SimpleITK",
     "tensorflow>=2.4.0",
     "tensorflow-addons",  # For resampler in atlalign/ml_utils/layers.py
 ]

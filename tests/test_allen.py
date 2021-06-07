@@ -23,7 +23,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 import requests
-from allensdk.api.queries.synchronization_api import SynchronizationApi
 
 from atlalign.allen import (
     corners_rs9,
@@ -506,8 +505,17 @@ class TestUtils:
             p, i, r, dataset_id=dataset_id
         )
 
-        sync_api = SynchronizationApi()
-        r = sync_api.get_reference_to_image(9, p, i, r, [dataset_id])[0]["image_sync"]
+        url = "".join(
+            [
+                "http://api.brain-map.org/api/v2/reference_to_image/9.json",
+                "?x=%f&y=%f&z=%f" % (p, i, r),
+                "&section_data_set_ids=",
+                ",".join(str(i) for i in [dataset_id]),
+            ]
+        )
+
+        response = requests.get(url)
+        r = response.json()["msg"]
 
         x_s, y_s, section_number_s, closest_section_image_id_s = (
             r["x"],

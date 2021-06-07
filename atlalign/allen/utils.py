@@ -27,11 +27,11 @@ Each function here is independent and performs a very specific lower level opera
 """
 
 import os
+import urllib
 
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
-from allensdk.api.queries.image_download_api import ImageDownloadApi
 
 CACHE_FOLDER = os.path.expanduser("~/.atlalign/")
 
@@ -93,9 +93,10 @@ def get_image(image_id, folder=None, **kwargs):
         return img
 
     else:
-
-        img_api = ImageDownloadApi()
-        img_api.download_image(image_id, file_path=path, **kwargs)
+        image_url = (
+            f"http://api.brain-map.org/api/v2/section_image_download/{str(image_id)}"
+        )
+        urllib.request.urlretrieve(image_url, path)
         return get_image(image_id, **kwargs)
 
 

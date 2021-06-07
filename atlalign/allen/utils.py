@@ -94,7 +94,7 @@ def get_image(image_id, folder=None, expression=False):
             f"http://api.brain-map.org/api/v2/section_image_download/{str(image_id)}"
         )
         if expression:
-            image_id += "?view=expression"
+            image_url += "?view=expression"
         urllib.request.urlretrieve(image_url, path)
         return get_image(image_id, expression=expression)
 

@@ -20,7 +20,6 @@ atlalign.allen.utils module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

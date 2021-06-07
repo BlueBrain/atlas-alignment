@@ -52,7 +52,6 @@ atlalign.ml\_utils.models module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

@@ -4,7 +4,6 @@ atlalign.non\_ml package
 Submodules
 ----------
 
-
 atlalign.non\_ml.intensity module
 ---------------------------------
 
@@ -12,7 +11,6 @@ atlalign.non\_ml.intensity module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------

@@ -72,14 +72,17 @@ def load_image(
             )
         )
 
-    if output_channels is None or output_channels == 3:
-        input_img = cv2.cvtColor(raw_input_, cv2.COLOR_BGR2RGB)
-
-    elif output_channels == 1:
-        input_img = cv2.cvtColor(raw_input_, cv2.COLOR_BGR2GRAY)
-
+    # If len(shape) == 2, i.e. shape = (width, height), then raw_input_ is
+    # already a grayscale image and we don't need to do any conversion
+    if len(raw_input_.shape) > 2:
+        if output_channels is None or output_channels == 3:
+            input_img = cv2.cvtColor(raw_input_, cv2.COLOR_BGR2RGB)
+        elif output_channels == 1:
+            input_img = cv2.cvtColor(raw_input_, cv2.COLOR_BGR2GRAY)
+        else:
+            raise ValueError("Invalid output channels: {}".format(output_channels))
     else:
-        raise ValueError("Invalid output channels: {}".format(output_channels))
+        input_img = raw_input_
 
     if output_shape is not None:
         input_img = cv2.resize(input_img, (output_shape[1], output_shape[0]))

@@ -18,14 +18,11 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from matplotlib import animation
 
 from atlalign.base import DisplacementField
-from atlalign.metrics import angular_error_of
 
 
 def create_animation(
@@ -236,6 +233,12 @@ def generate_df_plots(df_true, df_pred, filepath=None, figsize=(15, 15)):
         If specified, then the path to where the figure saved as a PNG image.
         If not specified, then shown.
     """
+    # The import is placed here in order to avoid the tensorflow import coming
+    # from atlalign.metrics in the module scope (it's very slow)
+    import seaborn as sns
+
+    from atlalign.metrics import angular_error_of
+
     plt.ioff()
     fig, (
         (ax_norm, ax_norm_p),

@@ -72,9 +72,7 @@ def main(argv=None):
     else:
         img_ref_path = pathlib.Path(args.ref)
         img_ref = load_image(
-            img_ref_path,
-            output_channels=output_channels,
-            output_dtype="float32"
+            img_ref_path, output_channels=output_channels, output_dtype="float32"
         )
     img_mov_path = pathlib.Path(args.mov)
     img_mov = load_image(

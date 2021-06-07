@@ -67,8 +67,8 @@ class TestUtils:
         assert isinstance(img, np.ndarray)
         assert img.dtype == np.uint8
 
-        # with kwargs
-        img = get_image(image_id, tmpdir, a=1, b=2)
+        # Retrieve expression of the specified image
+        img = get_image(image_id, tmpdir, expression=True)
         assert isinstance(img, np.ndarray)
         assert img.dtype == np.uint8
 
@@ -515,7 +515,7 @@ class TestUtils:
         )
 
         response = requests.get(url)
-        r = response.json()["msg"]
+        r = response.json()["msg"][0]["image_sync"]
 
         x_s, y_s, section_number_s, closest_section_image_id_s = (
             r["x"],

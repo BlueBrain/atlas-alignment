@@ -30,6 +30,7 @@ import pathlib
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from scipy.interpolate import (
     LSQBivariateSpline,
     NearestNDInterpolator,
@@ -37,8 +38,6 @@ from scipy.interpolate import (
     SmoothBivariateSpline,
     griddata,
 )
-
-import pandas as pd
 from skimage.transform import resize
 
 from atlalign.utils import griddata_custom

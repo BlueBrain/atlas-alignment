@@ -28,6 +28,8 @@ from skimage.color import gray2rgb
 from atlalign.base import DisplacementField
 from atlalign.visualization import create_grid
 
+plt.style.use("default")
+
 
 class HelperGlobal:
     """Just a way how to avoid using global variables.
@@ -777,7 +779,7 @@ def run_gui(img_ref, img_mov, mode="ref2mov", title=""):
     kernel : str
         Kernel.
     """
-    if not img_ref.shape == img_mov.shape:
+    if not img_ref.shape[:2] == img_mov.shape[:2]:
         raise ValueError(
             "The fixed and moving image need to have the same shape. "
             f"{img_ref.shape} vs. {img_mov.shape}"

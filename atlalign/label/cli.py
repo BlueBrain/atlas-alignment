@@ -1,29 +1,25 @@
 """Command line interface implementation."""
-
-"""
-    The package atlalign is a tool for registration of 2D images.
-
-    Copyright (C) 2021 EPFL/Blue Brain Project
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-
+# The package atlalign is a tool for registration of 2D images.
+#
+# Copyright (C) 2021 EPFL/Blue Brain Project
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
+import datetime
 import pathlib
 import sys
-
-import matplotlib.pyplot as plt
+from contextlib import redirect_stdout
 
 
 def main(argv=None):
@@ -52,38 +48,84 @@ def main(argv=None):
         help="Swap to the moving to reference mode.",
         action="store_true",
     )
-
+    parser.add_argument(
+        "-g",
+        "--force-grayscale",
+        default=False,
+        help="Force the images to be grayscale. Convert RGB to grayscale if necessary.",
+        action="store_true",
+    )
     args = parser.parse_args(argv)
 
-    ref = args.ref
-    mov = args.mov
-    output_path = args.output_path
-    swap = args.swap
-
     # Imports
+    import matplotlib.pyplot as plt
+    import numpy as np
+
     from atlalign.data import nissl_volume
-    from atlalign.label import load_image, run_GUI
+    from atlalign.label.io import load_image
+    from atlalign.label.new_GUI import run_gui
 
-    output_path = pathlib.Path(output_path)
-    output_path.mkdir(exist_ok=True, parents=True)
-
-    if ref.isdigit():
-        img_ref = nissl_volume()[int(ref), ..., 0]
+    # Read input images
+    output_channels = 1 if args.force_grayscale else None
+    if args.ref.isdigit():
+        img_ref = nissl_volume()[int(args.ref), ..., 0]
     else:
-        img_ref_path = pathlib.Path(ref)
-        img_ref = load_image(img_ref_path)
-
-    img_mov_path = pathlib.Path(mov)
+        img_ref_path = pathlib.Path(args.ref)
+        img_ref = load_image(
+            img_ref_path, output_channels=output_channels, output_dtype="float32"
+        )
+    img_mov_path = pathlib.Path(args.mov)
     img_mov = load_image(
-        img_mov_path, output_channels=1, keep_last=False, output_dtype="float32"
+        img_mov_path,
+        output_channels=output_channels,
+        output_dtype="float32",
     )
 
-    result_df = run_GUI(img_ref, img_mov, mode="mov2ref" if swap else "ref2mov")[0]
+    # Launch GUI
+    (
+        result_df,
+        keypoints,
+        symmetric_registration,
+        img_reg,
+        interpolation_method,
+        kernel,
+    ) = run_gui(img_ref, img_mov, mode="mov2ref" if args.swap else "ref2mov")
 
-    img_reg = result_df.warp(img_mov)
+    # Dump results and metadata to disk
+    output_path = pathlib.Path(args.output_path)
+    output_path.mkdir(exist_ok=True, parents=True)
 
     result_df.save(output_path / "df.npy")
-    plt.imsave(str(output_path / "registered.png"), img_reg)
+    np.save(output_path / "img_reg.npy", img_reg)
+    np.save(output_path / "img_ref.npy", img_ref)
+    np.save(output_path / "img_mov.npy", img_mov)
+    plt.imsave(output_path / "img_reg.png", img_reg)
+    plt.imsave(output_path / "img_ref.png", img_ref)
+    plt.imsave(output_path / "img_mov.png", img_mov)
+    with open(output_path / "keypoints.csv", "w") as file, redirect_stdout(file):
+        if args.swap:
+            print("mov x,mov y,ref x,ref y")
+        else:
+            print("ref x,ref y,mov x,mov y")
+        for (x1, y1), (x2, y2) in keypoints.items():
+            print(f"{x1},{y1},{x2},{y2}")
+    with open(output_path / "info.log", "w") as file, redirect_stdout(file):
+        print("Timestamp :", datetime.datetime.now().ctime())
+        print("")
+        print("Parameters")
+        print("----------")
+        print("ref             :", args.ref)
+        print("mov             :", args.mov)
+        print("output_path     :", output_path.resolve())
+        print("swap            :", args.swap)
+        print("force-grayscale :", args.force_grayscale)
+        print()
+        print("Interpolation")
+        print("-------------")
+        print("Symmetric :", symmetric_registration)
+        print("Method    :", interpolation_method)
+        print("Kernel    :", kernel)
+    print("Results were saved to", output_path.resolve())
 
 
 if __name__ == "__main__":

@@ -30,7 +30,6 @@ import pathlib
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from scipy.interpolate import (
     LSQBivariateSpline,
     NearestNDInterpolator,
@@ -90,7 +89,7 @@ class DisplacementField:
         approach : str, {'affine', 'affine_simple', 'control_points', 'identity', 'microsoft', 'paper', 'patch_shift'}
             What approach to use for generating the DVF.
 
-        kwargs : dict
+        kwargs
             Additional parameters that are passed into the the given approach function.
 
         Returns
@@ -564,6 +563,8 @@ class DisplacementField:
             Summary series containing the most interesting values.
 
         """
+        import pandas as pd
+
         # Parameters
         eps = 1e-2
 

@@ -5,6 +5,7 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
    atlalign.allen
    atlalign.label
@@ -13,6 +14,14 @@ Subpackages
 
 Submodules
 ----------
+
+atlalign.augmentations module
+-----------------------------
+
+.. automodule:: atlalign.augmentations
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 atlalign.base module
 --------------------

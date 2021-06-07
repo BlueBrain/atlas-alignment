@@ -653,7 +653,6 @@ class TestInvert:
             ("griddata", {"method": "cubic"}),
             ("griddata_custom", {}),
             ("smooth_bspline", {}),
-            ("itk", {}),
             ("rbf", {"function": "multiquadric"}),
             ("rbf", {"function": "inverse"}),
             ("rbf", {"function": "gaussian"}),
@@ -693,9 +692,6 @@ class TestInvert:
             ("griddata", {"method": "linear"}),
             ("griddata", {"method": "cubic"}),
             ("griddata_custom", {}),
-            pytest.param(
-                ("itk", {}), marks=pytest.mark.xfail
-            ),  # too hard for this method
             # ('smooth_bspline', {'s': 0.01}),  # NOT WORKING for some reason
             # ('LSQ_bspline', {}),  # Works, but memory issues
             ("rbf", {"function": "multiquadric"}),
@@ -799,9 +795,6 @@ class TestInvert:
             ("griddata", {"method": "linear"}),
             ("griddata", {"method": "cubic"}),
             ("griddata_custom", {}),
-            ("itk", {}),
-            # pytest.param(('itk', {}),
-            #              marks=pytest.mark.xfail),  # too hard for this methd
             # ('smooth_bspline', {'s': 0.01}),  # NOT WORKING for some reason
             # ('LSQ_bspline', {}),  # Works, but memory issues
             # ('rbf', {'function': 'multiquadric'}),  # too slow

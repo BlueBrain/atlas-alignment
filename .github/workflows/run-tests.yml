@@ -18,11 +18,14 @@ jobs:
       matrix:
         os: [ubuntu-latest] # macos 11 is currently in preview, macos-latest == 1.10.15
         python-version: [
+          3.6,
           3.7,
           3.8,
           3.9,
         ]
         include:
+          - python-version: 3.6
+            tox-env: py36
           - python-version: 3.7
             tox-env: py37
           - python-version: 3.8

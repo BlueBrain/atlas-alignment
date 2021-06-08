@@ -24,9 +24,9 @@ import datetime
 import pathlib
 
 import h5py
-import keras
 import mlflow
 import numpy as np
+from tensorflow import keras
 
 from atlalign.base import DisplacementField
 from atlalign.data import nissl_volume

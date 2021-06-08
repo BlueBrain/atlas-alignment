@@ -19,10 +19,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import keras
 import mlflow
 import numpy as np
-from keras.layers import (
+from tensorflow import keras
+from tensorflow.keras.layers import (
     Conv2D,
     Cropping2D,
     Dense,
@@ -36,7 +36,7 @@ from keras.layers import (
     ZeroPadding2D,
     concatenate,
 )
-from keras.models import Model
+from tensorflow.keras.models import Model
 
 from atlalign.ml_utils import (
     ALL_DVF_LOSSES,

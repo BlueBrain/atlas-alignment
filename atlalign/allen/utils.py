@@ -27,16 +27,16 @@ Each function here is independent and performs a very specific lower level opera
 """
 
 import os
+import urllib
 
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
-from allensdk.api.queries.image_download_api import ImageDownloadApi
 
 CACHE_FOLDER = os.path.expanduser("~/.atlalign/")
 
 
-def get_image(image_id, folder=None, **kwargs):
+def get_image(image_id, folder=None, expression=False):
     """Get any image from Allen's database just by its id.
 
     Notes
@@ -52,8 +52,9 @@ def get_image(image_id, folder=None, **kwargs):
     folder : str or LocalPath or None
         Local folder where image saved. If None then automatically defaults to `CACHE_FOLDER`.
 
-    **kwargs
-        Additional parameters to be passed onto the `download_image` method of ``ImageDownloadApi``. See
+    expression : bool
+        If True, retrieve the specified SectionImage's expression mask image.
+        Otherwise, retrieve the specified SectionImage.
         See references for details.
 
     Returns
@@ -76,11 +77,7 @@ def get_image(image_id, folder=None, **kwargs):
         os.makedirs(folder)
 
     # Create full path
-    additional_speficier = "_".join(
-        sorted(["{}_{}".format(k, v) for k, v in kwargs.items()])
-    )
-    if additional_speficier:
-        additional_speficier = "_{}".format(additional_speficier)
+    additional_speficier = "_expression" if expression else ""
     path = "{}{}{}.jpg".format(folder, image_id, additional_speficier)
 
     # Check image exists
@@ -93,10 +90,13 @@ def get_image(image_id, folder=None, **kwargs):
         return img
 
     else:
-
-        img_api = ImageDownloadApi()
-        img_api.download_image(image_id, file_path=path, **kwargs)
-        return get_image(image_id, **kwargs)
+        image_url = (
+            f"http://api.brain-map.org/api/v2/section_image_download/{str(image_id)}"
+        )
+        if expression:
+            image_url += "?view=expression"
+        urllib.request.urlretrieve(image_url, path)
+        return get_image(image_id, expression=expression)
 
 
 def get_2d(image_id, ref2inp=False, add_last=False):

@@ -22,10 +22,10 @@ import json
 import pathlib
 from copy import deepcopy
 
-from keras.layers import Lambda, concatenate
-from keras.models import Model
-from keras.models import load_model as load_model_keras
-from keras.models import model_from_json
+from tensorflow.keras.layers import Lambda, concatenate
+from tensorflow.keras.models import Model
+from tensorflow.keras.models import load_model as load_model_keras
+from tensorflow.keras.models import model_from_json
 
 from atlalign.ml_utils import (
     Affine2DVF,
@@ -120,7 +120,7 @@ def save_model(model, path, separate=True, overwrite=True):
         raise ValueError("Please specify a path without extension (folder).")
 
     if not separate:
-        model.save(str(path) + ".h5", overwrite=overwrite)
+        model.save(str(path) + ".h5", overwrite=overwrite, save_format="h5")
 
     else:
         path_architecture = path / (path.stem + ".json")

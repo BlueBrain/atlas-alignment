@@ -19,9 +19,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import keras
 import numpy as np
 import pytest
+import tensorflow as tf
+from tensorflow import keras
 
 from atlalign.nn import supervised_global_model_factory, supervised_model_factory
 
@@ -71,8 +72,10 @@ class TestSupervisedModelFactory:
         }
 
         np.random.seed(1337)
+        tf.random.set_seed(1337)
         model_with = supervised_model_factory(use_lambda=True, **params)
         np.random.seed(1337)
+        tf.random.set_seed(1337)
         model_without = supervised_model_factory(use_lambda=False, **params)
         x = np.random.random((1, 320, 456, 2))
         pred_with = model_with.predict([x, x] if compute_inv else x)

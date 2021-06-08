@@ -37,12 +37,6 @@ from scipy.interpolate import (
     SmoothBivariateSpline,
     griddata,
 )
-
-try:
-    import SimpleITK as sitk
-except ImportError as e:
-    print(e)
-
 from skimage.transform import resize
 
 from atlalign.utils import griddata_custom
@@ -990,24 +984,23 @@ class DisplacementField:
         """
         interpolator_kwargs = interpolator_kwargs or {}
 
-        if interpolation_method != "itk":
-            x, y = np.meshgrid(list(range(self.shape[1])), list(range(self.shape[0])))
-            xi = (y, x)
-            x_r, y_r = x.ravel(), y.ravel()
+        x, y = np.meshgrid(list(range(self.shape[1])), list(range(self.shape[0])))
+        xi = (y, x)
+        x_r, y_r = x.ravel(), y.ravel()
 
-            points = np.hstack(
-                (
-                    (y_r + self.delta_y.ravel()).reshape(-1, 1),
-                    (x_r + self.delta_x.ravel()).reshape(-1, 1),
-                )
+        points = np.hstack(
+            (
+                (y_r + self.delta_y.ravel()).reshape(-1, 1),
+                (x_r + self.delta_x.ravel()).reshape(-1, 1),
             )
+        )
 
-            # Downsampling
-            points = points[::ds_f]
-            x_r_ds = x_r[::ds_f]
-            y_r_ds = y_r[::ds_f]
+        # Downsampling
+        points = points[::ds_f]
+        x_r_ds = x_r[::ds_f]
+        y_r_ds = y_r[::ds_f]
 
-            x_, y_ = points[:, 1], points[:, 0]
+        x_, y_ = points[:, 1], points[:, 0]
 
         if interpolation_method == "griddata":
             values_grid_x = griddata(points=points, values=x_r_ds, xi=xi)
@@ -1022,35 +1015,6 @@ class DisplacementField:
 
             delta_x = values_grid_x.reshape(self.shape) - x
             delta_y = values_grid_y.reshape(self.shape) - y
-
-        elif interpolation_method == "itk":
-            # ~ 30 ms per image
-            df_sitk = sitk.GetImageFromArray(
-                np.concatenate(
-                    (self.delta_x[..., np.newaxis], self.delta_y[..., np.newaxis]),
-                    axis=2,
-                ),
-                isVector=True,
-            )
-
-            invertor = sitk.InvertDisplacementFieldImageFilter()
-
-            # Set behaviour
-            user_spec = {
-                "n_iter": interpolator_kwargs.get("n_iter", 20),
-                "tol": interpolator_kwargs.get("tol", 1e-3),
-            }
-
-            # invertor.EnforceBoundaryConditionOn()
-            invertor.SetMeanErrorToleranceThreshold(user_spec["tol"])  # big effect
-            invertor.SetMaximumNumberOfIterations(user_spec["n_iter"])  # big effect
-
-            # Run
-            df_sitk_inv = invertor.Execute(df_sitk)
-
-            delta_xy = sitk.GetArrayFromImage(df_sitk_inv)
-
-            delta_x, delta_y = delta_xy[..., 0], delta_xy[..., 1]
 
         elif interpolation_method == "noop":
             # for benchmarking purposes

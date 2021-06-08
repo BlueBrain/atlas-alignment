@@ -21,18 +21,19 @@
 
 import numpy as np
 import tensorflow as tf
-from keras import backend as K
-from keras.engine.topology import Layer
-from keras.layers import (
+from tensorflow.keras import backend as K
+from tensorflow.keras.layers import (
     BatchNormalization,
     Conv2D,
     Dense,
     Flatten,
     Lambda,
+    Layer,
     MaxPool2D,
     ReLU,
     Reshape,
 )
+from tensorflow_addons.image import resampler
 
 
 def K_meshgrid(x, y):
@@ -349,7 +350,7 @@ class BilinearInterpolation(Layer):
 
         f_x_f_y = grid + dvfs
 
-        output = tf.contrib.resampler.resampler(imgs, f_x_f_y)
+        output = resampler(imgs, f_x_f_y)
 
         return output
 

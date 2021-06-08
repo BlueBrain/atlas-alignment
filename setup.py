@@ -15,20 +15,20 @@ includes both traditional and supervised deep learning models.
 This project originated from the Blue Brain Project efforts on aligning mouse
 brain atlases obtained with ISH gene expression and Nissl stains."""
 
-PYTHON_REQUIRES = "~=3.7.0"
+PYTHON_REQUIRES = ">=3.6.0"
 INSTALL_REQUIRES = [
-    "antspyx==0.2.4",
-    "allensdk>=0.16.3",
+    "antspyx==0.2.7",
     "imgaug<0.3",
-    "Keras==2.2.4",
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",
-    "numpy>=1.16.3",
+    "numpy",
+    "seaborn",
     "scikit-image>=0.16.0",
     "scikit-learn>=0.20.2",
-    "scipy==1.2.1",
-    "tensorflow>=1.15.4,<2",
+    "scipy",
+    "tensorflow>=2.4.0",
+    "tensorflow-addons",  # For resampler in atlalign/ml_utils/layers.py
 ]
 
 setup(

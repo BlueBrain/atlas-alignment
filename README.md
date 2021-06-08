@@ -52,6 +52,14 @@
 		</a>
 	</td>
 </tr>
+<tr>
+  <td>Python Versions</td>
+  <td>
+    <a href="https://pypi.org/project/atlalign/">
+    <img src="https://img.shields.io/pypi/pyversions/atlalign.svg" alt="Python Versions" />
+    </a>
+  </td>
+</tr>
 </table>
 
 Atlas Alignment is a toolbox to perform multimodal image registration. It 

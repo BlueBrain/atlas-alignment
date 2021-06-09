@@ -24,4 +24,4 @@ X.Y.Z for bug fixes
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-__version__ = "0.5.1"
+__version__ = "0.6.0"

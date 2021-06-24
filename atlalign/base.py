@@ -52,7 +52,10 @@ from atlalign.zoo import (
     single_frequency,
 )
 
+# Set/create the default caching folder
 GLOBAL_CACHE_FOLDER = pathlib.Path.home() / ".atlalign"
+if not GLOBAL_CACHE_FOLDER.exists():
+    GLOBAL_CACHE_FOLDER.mkdir(parents=True)
 
 
 class DisplacementField:

@@ -1,7 +1,7 @@
 3D Interpolation
 ================
 Once we register consecutive 2D slices the next step is to think of creating 3D volumes. This is especially relevant
-for data from the **Allen Brain Institute** that come from experiments with a very specific design (see  :ref:`allen`).
+for data from the **Allen Brain Institute** that come from experiments with a very specific design.
 
 There are multiple ways how to perform this interpolation and some of these are contained in the :code:`atlalign.volume`
 module:

@@ -14,7 +14,6 @@ The goal of this project is to facilitate the registration of gene expression im
    source/installation
    source/image_registration
    source/building_blocks
-   source/allen
    source/datasets
    source/intensity
    source/labeling_tool

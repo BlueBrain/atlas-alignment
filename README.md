@@ -120,6 +120,10 @@ You can find example data on [Zenodo](https://zenodo.org/record/4541446#.YCqGFc9
 Unzip the files to `~/.atlalign/` folder so that you can use the `data.py` module
 without manual specification of paths.
 
+#### Allen Brain Institute Database
+You can find and download ISH data from Allen Brain Institute thanks to
+[Atlas Download Tools](https://github.com/BlueBrain/Atlas-Download-Tools) repository.
+
 ### Funding & Acknowledgment
 This project was supported by funding to the Blue Brain 
 Project, a research center of the Ecole polytechnique fédérale de Lausanne, from 

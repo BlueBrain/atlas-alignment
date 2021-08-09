@@ -37,19 +37,6 @@ should always return a tuple of (metric_average, metric_per_output).
 from functools import wraps
 
 import ants
-
-try:
-    import lpips_tf
-except ModuleNotFoundError as err:
-    raise ModuleNotFoundError(
-        """
-        LPIPS-TensorFlow required but not found.
-
-        Please install it by running the following command:
-        $ pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
-        """
-    ) from err
-
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -996,6 +983,17 @@ def perceptual_loss_img(y_true, y_pred, model="net-lin", net="vgg"):
     We use the decorator just to make sure we do not run out of memory during a forward pass. Also,
     its fully convolutional but if the images are too small then might run into issues.
     """
+    try:
+        import lpips_tf
+    except ModuleNotFoundError as err:
+        raise ModuleNotFoundError(
+            """
+            LPIPS-TensorFlow required but not found.
+
+            Please install it by running the following command:
+            $ pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
+            """
+        ) from err
     # gray2rgb
     y_true = np.stack((y_true,) * 3, axis=-1)
     y_pred = np.stack((y_pred,) * 3, axis=-1)

@@ -19,11 +19,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import tensorflow.keras.backend as K
-from tensorflow import keras
-
 import numpy as np
 import tensorflow as tf
+import tensorflow.keras.backend as K
+from tensorflow import keras
 
 
 # IMAGE LOSSES

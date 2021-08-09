@@ -37,7 +37,6 @@ should always return a tuple of (metric_average, metric_per_output).
 from functools import wraps
 
 import ants
-
 import numpy as np
 import pandas as pd
 import tensorflow as tf

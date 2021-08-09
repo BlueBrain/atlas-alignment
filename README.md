@@ -80,7 +80,8 @@ All details related to installation and logic are described in the
 
 Some of the functionalities of `atlalign` depend on the [TensorFlow implementation
 of the Learned Perceptual Image Patch Similarity (LPIPS)](https://github.com/alexlee-gk/lpips-tensorflow). Unfortunately, the
-package is not available on PyPI and must be installed manually as follows.
+package is not available on PyPI and must be installed manually as follows
+for full functionality.
 ```shell script
 pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
 ```

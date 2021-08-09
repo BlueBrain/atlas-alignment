@@ -22,18 +22,6 @@
 import tensorflow.keras.backend as K
 from tensorflow import keras
 
-try:
-    import lpips_tf
-except ModuleNotFoundError as err:
-    raise ModuleNotFoundError(
-        """
-        LPIPS-TensorFlow required but not found.
-
-        Please install it by running the following command:
-        $ pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
-        """
-    ) from err
-
 import numpy as np
 import tensorflow as tf
 
@@ -157,6 +145,17 @@ class PerceptualLoss:
 
     def loss(self, y_true, y_pred):
         """Compute loss."""
+        try:
+            import lpips_tf
+        except ModuleNotFoundError as err:
+            raise ModuleNotFoundError(
+                """
+                LPIPS-TensorFlow required but not found.
+
+                Please install it by running the following command:
+                $ pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
+                """
+            ) from err
         y_true_rgb = tf.concat(3 * [y_true], axis=-1)
         y_pred_rgb = tf.concat(3 * [y_pred], axis=-1)
 

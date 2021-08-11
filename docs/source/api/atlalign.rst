@@ -7,7 +7,6 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   atlalign.allen
    atlalign.label
    atlalign.ml_utils
    atlalign.non_ml

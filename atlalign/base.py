@@ -905,7 +905,7 @@ class DisplacementField:
         Parameters
         ----------
         freq : int
-            Take every `freq`th pixel. The higher the more sparse.
+            Take every `freq` th pixel. The higher the more sparse.
 
         figsize : tuple
             Size of the figure.

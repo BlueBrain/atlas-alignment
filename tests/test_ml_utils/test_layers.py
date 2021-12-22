@@ -24,6 +24,7 @@ import tensorflow.keras.backend as K
 from skimage.draw import rectangle
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model, load_model, save_model
+from tensorflow.python.keras.engine.keras_tensor import KerasTensor
 
 from atlalign.base import DisplacementField
 from atlalign.ml_utils import (
@@ -70,7 +71,7 @@ class TestBilinearInterpolation:
             else BilinearInterpolation_()
         )
         x = layer([imgs, dvfs])
-        # assert isinstance(x, KerasTensor)
+        assert isinstance(x, KerasTensor)
         # this fix is temporary,
         # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-742514157
         assert x.shape.ndims == 4

@@ -31,7 +31,7 @@ import warnings
 
 import h5py
 import numpy as np
-from skimage.draw import circle
+from skimage.draw import disk
 from skimage.util import img_as_float32
 
 from atlalign.base import GLOBAL_CACHE_FOLDER
@@ -228,7 +228,7 @@ def circles(n_samples, shape, radius, n_levels=3, random_state=None):
         intensity = 1 / n_levels_ if direction == "incr" else 1
 
         for rs in reversed(radi):  # Start from the largest circle
-            res = circle(r, c, rs)
+            res = disk((r, c), rs)
             img[res] = intensity
 
             if direction == "incr":

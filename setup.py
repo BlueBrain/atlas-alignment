@@ -24,7 +24,7 @@ INSTALL_REQUIRES = [
     "nibabel>=2.4.0",
     "numpy",
     "seaborn",
-    "scikit-image>=0.16.0",
+    "scikit-image>=0.19.1",
     "scikit-learn>=0.20.2",
     "scipy",
     "tensorflow>=2.4.0",

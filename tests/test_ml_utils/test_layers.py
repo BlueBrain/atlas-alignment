@@ -22,9 +22,9 @@ import numpy as np
 import pytest
 import tensorflow.keras.backend as K
 from skimage.draw import rectangle
+from tensorflow.keras.backend import is_keras_tensor
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model, load_model, save_model
-from tensorflow.python.keras.engine.keras_tensor import KerasTensor
 
 from atlalign.base import DisplacementField
 from atlalign.ml_utils import (
@@ -71,9 +71,9 @@ class TestBilinearInterpolation:
             else BilinearInterpolation_()
         )
         x = layer([imgs, dvfs])
-        assert isinstance(x, KerasTensor)
+        assert is_keras_tensor(x)
         # this fix is temporary,
-        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-742514157
+        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-874096590
         assert x.shape.ndims == 4
 
         model = Model(inputs=[imgs, dvfs], outputs=x)
@@ -152,9 +152,9 @@ class TestBilinearInterpolation:
         )
         x = layer([imgs, dvfs])
 
-        assert isinstance(x, KerasTensor)
+        assert is_keras_tensor(x)
         # this fix is temporary,
-        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-742514157
+        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-874096590
         assert x.shape.ndims == 4
 
         model = Model(inputs=[imgs, dvfs], outputs=x)
@@ -219,9 +219,9 @@ class TestDVFComposition:
         layer = DVFComposition()
         x = layer([dvfs_outer, dvfs_inner])
 
-        assert isinstance(x, KerasTensor)
+        assert is_keras_tensor(x)
         # this fix is temporary,
-        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-742514157
+        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-874096590
         assert x.shape.ndims == 4
 
         model = Model(inputs=[dvfs_outer, dvfs_inner], outputs=x)
@@ -317,9 +317,9 @@ class TestAffine2DVF:
         layer = Affine2DVF((h, w))
         x = layer(a_tensor)
 
-        assert isinstance(x, KerasTensor)
+        assert is_keras_tensor(x)
         # this fix is temporary,
-        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-742514157
+        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-874096590
         assert x.shape.ndims == 4
         assert K.int_shape(x) == (None, h, w, 2)
 
@@ -356,9 +356,9 @@ class TestAffine2DVF:
         layer = Affine2DVF((h, w))
         x = layer(a_tensor)
 
-        assert isinstance(x, KerasTensor)
+        assert is_keras_tensor(x)
         # this fix is temporary,
-        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-742514157
+        # see https://github.com/tensorflow/tensorflow/issues/44613#issuecomment-874096590
         assert x.shape.ndims == 4
         assert K.int_shape(x) == (None, h, w, 2)
 

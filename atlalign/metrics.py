@@ -785,7 +785,7 @@ def psnr_img(y_true, y_pred, mask=None, data_range=None):
 
     References
     ----------
-    .. [1] https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio
+    .. https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio
 
     """
     if mask is None:
@@ -1107,7 +1107,7 @@ def tre_kp(y_true, y_pred, weighted=False):
 
     References
     ----------
-    .. [1] https://anhir.grand-challenge.org/Performance_Metrics/
+    .. https://anhir.grand-challenge.org/Performance_Metrics/
 
     """
     # Extract useful parameters
@@ -1153,7 +1153,7 @@ def rtre_kp(y_true, y_pred, h, w, weighted=False):
 
     References
     ----------
-    .. [1] https://anhir.grand-challenge.org/Performance_Metrics/
+    .. https://anhir.grand-challenge.org/Performance_Metrics/
 
     """
     # Extract useful parameters

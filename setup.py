@@ -67,6 +67,9 @@ setup(
             "pytest-mock>=1.10.1",
         ],
         "docs": ["sphinx>=1.3", "sphinx-bluebrain-theme"],
+        "lpips": [
+            "lpips_tf@git+https://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf",
+        ],
     },
     entry_points={"console_scripts": ["label-tool = atlalign.label.cli:main"]},
 )

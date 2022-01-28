@@ -76,30 +76,31 @@ All details related to installation and logic are described in the
 
 ### Installation
 
-#### Installation Requirements
-
-Some of the functionalities of `atlalign` depend on the [TensorFlow implementation
-of the Learned Perceptual Image Patch Similarity (LPIPS)](https://github.com/alexlee-gk/lpips-tensorflow). Unfortunately, the
-package is not available on PyPI and must be installed manually as follows
-for full functionality.
-```shell script
-pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
-```
-
-You can now move on to installing the actual `atlalign` package!
-
 #### Installation from PyPI
 The `atlalign` package can be easily installed from PyPI.
 ```shell script
 pip install atlalign
 ```
 
+If you need to use the functionalities depending on the [TensorFlow implementation
+of the Learned Perceptual Image Patch Similarity (LPIPS)](https://github.com/alexlee-gk/lpips-tensorflow),
+you should use instead:
+```shell script
+pip install 'atlalign[lpips]'
+```
+
 #### Installation from source
 As an alternative to installing from PyPI, if you want to try the latest version
 you can also install from source. 
 ```shell script
-pip install git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign
+pip install 'git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign'
 ```
+
+or, to include the LPIPS dependency:
+```shell script
+pip install 'git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign[lpips]'
+```
+
 
 #### Installation for development
 If you want a dev install, you should install the latest version from source with
@@ -107,7 +108,7 @@ all the extra requirements for running test and generating docs.
 ```shell script
 git clone https://github.com/BlueBrain/atlas_alignment
 cd atlas_alignment
-pip install -e .[dev,docs]
+pip install -e '.[dev,docs,lpips]'
 ```
 
 ### Examples

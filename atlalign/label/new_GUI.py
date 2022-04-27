@@ -129,8 +129,8 @@ class HelperGlobal:
         # Visual
         self.marker_ref = "."
         self.marker_mov = "+"
-        self.marker_size_ref = 7 ** 2
-        self.marker_size_mov = 7 ** 2
+        self.marker_size_ref = 7**2
+        self.marker_size_mov = 7**2
 
         self.all_colors = deque(
             ["red", "green", "blue", "yellow", "orange", "pink", "brown", "cyan"]

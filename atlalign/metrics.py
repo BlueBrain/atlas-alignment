@@ -1159,7 +1159,7 @@ def rtre_kp(y_true, y_pred, h, w, weighted=False):
     # Extract useful parameters
     n = len(y_true)
 
-    diagonal = (w ** 2 + h ** 2) ** (1 / 2)
+    diagonal = (w**2 + h**2) ** (1 / 2)
 
     rtre = _euclidean_distance_kp(y_true, y_pred) / diagonal
     weights = _compute_weights_kp(y_true) if weighted else 1 / n * np.ones(n)

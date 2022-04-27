@@ -196,7 +196,7 @@ def supervised_model_factory(
 
     n_downsamples = len(downsample_filters)
 
-    if (height % (2 ** n_downsamples)) != 0 or (width % (2 ** n_downsamples) != 0):
+    if (height % (2**n_downsamples)) != 0 or (width % (2**n_downsamples) != 0):
         raise ValueError("Requested downsampling not possible.")
 
     inputs_rm = Input(shape=(320, 456, 2), name="reg_mov")

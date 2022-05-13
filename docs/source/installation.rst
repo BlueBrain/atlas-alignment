@@ -10,19 +10,6 @@ The project is only available for **Python 3.7**. The main reason for this
 restriction is an external dependency **ANTsPy** that does
 not provide many precompiled wheels on PyPI.
 
-External Dependencies
----------------------
-Some of the functionalities of :code:`atlalign` depend on the
-`TensorFlow implementation of the Learned Perceptual Image Patch Similarity <https://github.com/alexlee-gk/lpips-tensorflow>`_.
-Unfortunately, the
-package is not available on PyPI and must be installed manually as follows.
-
-.. code-block:: bash
-
-    pip install git+http://github.com/alexlee-gk/lpips-tensorflow.git#egg=lpips_tf
-
-You can now move on to installing the actual `atlalign` package!
-
 Installation from PyPI
 ----------------------
 The :code:`atlalign` package can be easily installed from PyPI.
@@ -31,6 +18,14 @@ The :code:`atlalign` package can be easily installed from PyPI.
 
     pip install atlalign
 
+If you need to use the functionalities depending on the
+`TensorFlow implementation of the Learned Perceptual Image Patch Similarity <https://github.com/alexlee-gk/lpips-tensorflow>`_,
+you should use instead:
+
+.. code-block:: bash
+
+    pip install 'atlalign[lpips]'
+
 Installation from source
 ------------------------
 As an alternative to installing from PyPI, if you want to try the latest version
@@ -38,7 +33,13 @@ you can also install from source.
 
 .. code-block:: bash
 
-    pip install git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign
+    pip install 'git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign'
+
+or, to include the LPIPS dependency:
+
+.. code-block:: bash
+
+    pip install 'git+https://github.com/BlueBrain/atlas_alignment#egg=atlalign[lpips]'
 
 Development installation
 ------------------------
@@ -47,12 +48,13 @@ following way:
 
 - **dev** - pytest + plugins, flake8, pydocstyle, tox
 - **docs** - sphinx
+- **lpips** - lpips
 
 .. code-block:: bash
 
     git clone https://github.com/BlueBrain/atlas_alignment
     cd atlas_alignment
-    pip install -e .[dev,docs]
+    pip install -e '.[dev,docs,lpips]'
 
 
 Generating documentation

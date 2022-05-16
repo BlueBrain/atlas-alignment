@@ -1,20 +1,22 @@
+import json
 import pathlib
 import warnings
-import nrrd
-import json
-import numpy as np
+from argparse import ArgumentParser
 from os import makedirs
 from os.path import join
-from tqdm import tqdm
-from argparse import ArgumentParser
+
+import nrrd
+import numpy as np
+import scipy
+from atldld.sync import DatasetDownloader
 from skimage.color import rgb2gray
 from skimage.filters import threshold_otsu
 from skimage.transform import resize
-from atldld.sync import DatasetDownloader
+from tqdm import tqdm
+
 from atlalign.base import DisplacementField
 from atlalign.non_ml import antspy_registration
-from atlalign.volume import GappedVolume, CoronalInterpolator
-import scipy
+from atlalign.volume import CoronalInterpolator, GappedVolume
 
 warnings.filterwarnings("ignore")
 
@@ -208,8 +210,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # imports
-    from atlalign.ml_utils import merge_global_local, load_model
     from unittest.mock import Mock
+
+    from atlalign.ml_utils import load_model, merge_global_local
 
     print("Aligning markers images to the Nissl volume.")
 

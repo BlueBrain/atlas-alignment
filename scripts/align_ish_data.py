@@ -1,4 +1,5 @@
 import json
+import logging
 import pathlib
 import warnings
 from argparse import ArgumentParser
@@ -19,6 +20,11 @@ from atlalign.non_ml import antspy_registration
 from atlalign.volume import CoronalInterpolator, GappedVolume
 
 warnings.filterwarnings("ignore")
+logger = logging.getLogger()
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
+
+
 
 
 class SagittalInterpolator:
@@ -70,7 +76,7 @@ class SagittalInterpolator:
                 try:
                     final_volume[r, c, :] = f(grid)
                 except Exception as e:
-                    print(e)
+                    logging.warning(e)
 
         return final_volume
 
@@ -214,7 +220,7 @@ if __name__ == "__main__":
 
     from atlalign.ml_utils import load_model, merge_global_local
 
-    print("Aligning markers images to the Nissl volume.")
+    logger.info("Aligning markers images to the Nissl volume.")
 
     nvol, header = nrrd.read(args.nissl_path)
     nvol = nvol / nvol.max()
@@ -228,7 +234,7 @@ if __name__ == "__main__":
     args.output_path.mkdir(exist_ok=True, parents=True)
 
     for dataset_id in genelist:
-        print(f"Downloading and aligning {dataset_id=}")
+        logger.info(f"Downloading and aligning {dataset_id=}")
         # temp
         download_and_align_marker = Mock(return_value=np.zeros((528, 320, 456)))
         volume = download_and_align_marker(

@@ -1,3 +1,4 @@
+import pathlib
 import warnings
 import nrrd
 import json
@@ -11,7 +12,6 @@ from skimage.filters import threshold_otsu
 from skimage.transform import resize
 from atldld.sync import DatasetDownloader
 from atlalign.base import DisplacementField
-from atlalign.ml_utils import merge_global_local, load_model
 from atlalign.non_ml import antspy_registration
 from atlalign.volume import GappedVolume, CoronalInterpolator
 import scipy
@@ -73,7 +73,7 @@ class SagittalInterpolator:
         return final_volume
 
 
-def align_marker(
+def download_and_align_marker(
         dataset_id, nvol, model_gl, header,
         all_sn=None, output_filename=None,
         include_expr=True,
@@ -95,13 +95,7 @@ def align_marker(
         output_filename: Name of the file where the dataset will be stored.
         resolution: Voxel size for the nissl volume in um
     """
-
-    use_manual = True
-    if all_sn is None:
-        all_sn = []
-        use_manual = False
-    if output_filename is None:
-        output_filename = str(dataset_id) + "_expr.nrrd"
+    is_sagitall = False  # TODO
 
     slice_shape = nvol.shape[1:]
     downloader = DatasetDownloader(dataset_id, include_expression=include_expr, downsample_img=2)
@@ -174,69 +168,76 @@ def align_marker(
     else:
         ci = CoronalInterpolator(kind="linear")
     final_volume = ci.interpolate(gv)
-    nrrd.write(output_filename, final_volume, header=header)
-    return all_sn
+
+    return final_volume
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("ccf")
+    parser.add_argument(
+        "nissl_path",
+        type=pathlib.Path,
+        help="Path to the Nissl volume."
+    )
+    parser.add_argument(
+        "local_model_path",
+        type=pathlib.Path,
+        help="Path to the local deep learning model."
+    )
+    parser.add_argument(
+        "global_model_path",
+        type=pathlib.Path,
+        help="Path to the global deep learning model."
+    )
+    parser.add_argument(
+        "genes",
+        type=str,
+        help="Comma separated list of gene ids to download and align."
+    )
+    parser.add_argument(
+        "output_path",
+        type=pathlib.Path,
+        help="Path to the folder where the results will be stored."
+    )
+    parser.add_argument(
+        "-e",
+        "--include-expression",
+        action="store_true",
+        help="If True, we also download and align expression images."
+    )
     args = parser.parse_args()
+
+    # imports
+    from atlalign.ml_utils import merge_global_local, load_model
+    from unittest.mock import Mock
+
     print("Aligning markers images to the Nissl volume.")
 
-    DATA_FOLDER = "../data/"
-    CCF_version = args.ccf
-
-    dl_global_path = join(DATA_FOLDER, "atlalign/global/boring_bear/")
-    dl_local_path = join(DATA_FOLDER, "atlalign/local/blue_bird/")
-    nvol, h = nrrd.read(join(DATA_FOLDER, CCF_version, "ara_nissl_25.nrrd"))
+    nvol, header = nrrd.read(args.nissl_path)
     nvol = nvol / nvol.max()
 
-    # For each dataset, every coronal section was manually realigned
-    # to the corresponding anatomical section of the high-resolution Nissl-stained mouse brain.
-    # reordered_slices = json.loads(
-    #     open(join(DATA_FOLDER, "realigned_slices.json"), "r").read()
-    # )
-    reordered_slices = {}
+    genelist = args.genes.split(",")
 
-    # List of ISH experiment ids according to the AIBS API
-    # ish experiments used in Rodarie et al. 2022
-    genelist = [868, 1001, 77371835, 479]
-    namelist = ["pvalb", "SST", "VIP", "gad1"]
-    is_sagittal = [False for _ in range(4)]
-    take_expression = [True for _ in range(4)]
+    local_model = load_model(args.local_model_path)
+    global_model = load_model(args.global_model_path)
+    model_gl = merge_global_local(global_model, local_model)
 
-    genelist += [79556706]
-    namelist += ["gad1_bis"]
-    is_sagittal += [False]
-    take_expression += [True]
+    args.output_path.mkdir(exist_ok=True, parents=True)
 
-    # ish experiments used in Erö et al. 2018
-    genelist += [79591671, 112202838, 79591593, 1175, "75147760"]
-    namelist += ["GFAP", "MBP", "S100b", "CNP", "NRN1"]
-    is_sagittal += [False for _ in range(5)]
-    take_expression += [False for _ in range(5)]
+    for dataset_id in genelist:
+        print(f"Downloading and aligning {dataset_id=}")
+        # temp
+        download_and_align_marker = Mock(return_value=np.zeros((528, 320, 456)))
+        volume = download_and_align_marker(
+            dataset_id,
+            nvol,
+            model_gl,
+            include_expr=args.include_expression,
+        )
 
-    genelist += [68161453, 68631984 ]
-    namelist += ["TMEM119", "ALDH1L1"]
-    is_sagittal += [True, True]
-    take_expression += [False, False]
+        gene_folder = args.output_path / dataset_id
+        gene_folder.mkdir(exist_ok=True, parents=True)
 
-    model_gl = merge_global_local(load_model(dl_global_path), load_model(dl_local_path))
-    makedirs(join(DATA_FOLDER, CCF_version, "marker_volumes"), exist_ok=True)
-    for i_dataset, dataset_id in enumerate(genelist):
-        print("Aligning dataset to nissl for " + namelist[i_dataset])
-        print("Expr: " + str(take_expression[i_dataset]) + ", Sagittal: " + str(is_sagittal[i_dataset]))
-        if str(dataset_id) not in reordered_slices:
-            all_sn = None
-        else:
-            all_sn = np.array(reordered_slices[str(dataset_id)])
-        reordered_slices[str(dataset_id)] = align_marker(dataset_id, nvol, model_gl,
-                                                         h, all_sn,
-                                                         join(DATA_FOLDER, CCF_version,
-                                                              "marker_volumes", namelist[i_dataset] + ".nrrd"),
-                                                         is_sagittal=is_sagittal[i_dataset],
-                                                         include_expr=take_expression[i_dataset]
-                                                         )
-    with open(join(DATA_FOLDER, CCF_version, "marker_volumes", "realigned_slices.json"), 'w') as fp:
-        json.dump(reordered_slices, fp, indent=4)
+        volume_path = gene_folder / "volume.nrrd"
+
+        nrrd.write(str(volume_path), volume, header=header)

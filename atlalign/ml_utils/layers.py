@@ -356,6 +356,7 @@ class BilinearInterpolation(Layer):
 
         return output
 
+
 @tf.keras.saving.register_keras_serializable("atlalign")
 class DVFComposition(Layer):
     """Composition of 2 displacement vector fields.
@@ -447,6 +448,7 @@ class DVFComposition(Layer):
 
         dvfs_composition = K.concatenate((delta_x, delta_y), axis=3)
         return dvfs_composition
+
 
 @tf.keras.saving.register_keras_serializable("atlalign")
 class Affine2DVF(Layer):

@@ -36,8 +36,8 @@ from atlalign.ml_utils import (
     NoOp,
 )
 
-
 serialization_lib.enable_unsafe_deserialization()
+
 
 def merge_global_local(model_g, model_l, expose_global=False):
     """Merge a global and local aligner models into a new one.

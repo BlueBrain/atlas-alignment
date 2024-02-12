@@ -81,7 +81,6 @@ class TestSupervisedModelFactory:
         pred_with = model_with.predict([x, x] if compute_inv else x)
         pred_without = model_without.predict([x, x] if compute_inv else x)
 
-        print(np.max(abs(pred_with[0] - pred_without[0])))
         assert np.allclose(pred_with[0], pred_without[0])
         assert np.allclose(pred_with[1], pred_without[1])
         if compute_inv:

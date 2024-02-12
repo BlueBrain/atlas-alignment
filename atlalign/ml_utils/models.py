@@ -181,6 +181,7 @@ def load_model(path, compile=False):
                 "ExtractMoving": ExtractMoving,
                 "NoOp": NoOp,
             },
+            safe_mode=False,
         )
 
     elif path.is_dir():

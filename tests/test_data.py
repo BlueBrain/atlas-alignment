@@ -229,7 +229,7 @@ class TestRectangles:
     def test_no_empty_images(self, random_state):
         """Test that no empty images."""
 
-        shape = (100, 120)
+        shape = (100, 120, 1)
         res = rectangles(
             10, shape, (20, 30), (10, 50), n_levels=4, random_state=random_state
         )

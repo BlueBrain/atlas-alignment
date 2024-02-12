@@ -195,7 +195,6 @@ class TestReplaceLambdaInConfig:
             new_model = output
         elif output_format == "json":
             assert isinstance(output, str)
-            breakpoint()
             new_model = keras.models.model_from_json(
                 output,
                 custom_objects={
@@ -205,7 +204,6 @@ class TestReplaceLambdaInConfig:
             )
         elif output_format == "dict":
             assert isinstance(output, dict)
-            breakpoint()
             new_model = keras.Model.from_config(
                 output,
                 custom_objects={

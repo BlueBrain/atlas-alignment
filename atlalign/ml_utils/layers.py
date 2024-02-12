@@ -576,16 +576,6 @@ class NoOp(Layer):
         """Compute output shape."""
         return input_shape
 
-    def get_config(self):
-        base_config = super().get_config()
-        return {**base_config}
-
-    # @classmethod
-    # def from_config(cls, config):
-    #     sublayer_config = config.pop("x")
-    #     sublayer = keras.saving.deserialize_keras_object(sublayer_config)
-    #     return cls(sublayer, **config)
-
 
 @tf.keras.saving.register_keras_serializable()
 class ExtractMoving(Layer):

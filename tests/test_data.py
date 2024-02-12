@@ -229,12 +229,12 @@ class TestRectangles:
     def test_no_empty_images(self, random_state):
         """Test that no empty images."""
 
-        shape = (100, 120, 1)
+        shape = (100, 120)
         res = rectangles(
             10, shape, (20, 30), (10, 50), n_levels=4, random_state=random_state
         )
 
-        zeros = np.zeros(shape)
+        zeros = np.zeros((*shape, 1))
         for row in res:
             assert not np.all(row == zeros)
 

@@ -22,6 +22,7 @@ import json
 import pathlib
 from copy import deepcopy
 
+from keras.src.saving import serialization_lib
 from tensorflow.keras.layers import Lambda, concatenate
 from tensorflow.keras.models import Model
 from tensorflow.keras.models import load_model as load_model_keras
@@ -35,6 +36,8 @@ from atlalign.ml_utils import (
     NoOp,
 )
 
+
+serialization_lib.enable_unsafe_deserialization()
 
 def merge_global_local(model_g, model_l, expose_global=False):
     """Merge a global and local aligner models into a new one.

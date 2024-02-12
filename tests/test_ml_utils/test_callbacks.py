@@ -101,7 +101,7 @@ class TestMLFlowCallback:
 
         h5_path = path_test_data / "supervised_dataset.h5"
 
-        train_ixs_path = 1
+        train_ixs_path = "a"
         val_ixs_path = "b"
 
         with mlflow.start_run():
@@ -136,7 +136,7 @@ class TestMLFlowCallback:
             monkeypatch.setattr(
                 cb,
                 "compute_external_metrics",
-                Mock(return_value=pd.Series({2: "a"}).to_frame()),
+                Mock(return_value=pd.Series({2: "1"}).to_frame()),
             )
 
             cb.on_batch_end(None)  # 1

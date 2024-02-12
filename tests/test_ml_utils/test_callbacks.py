@@ -101,7 +101,7 @@ class TestMLFlowCallback:
 
         h5_path = path_test_data / "supervised_dataset.h5"
 
-        train_ixs_path = "a"
+        train_ixs_path = 1
         val_ixs_path = "b"
 
         with mlflow.start_run():

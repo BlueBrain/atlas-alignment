@@ -164,7 +164,6 @@ class TestCoronalInterpolator:
         sn = [0, 100, 527]
 
         valid = np.ones(shape, dtype=bool)
-        breakpoint()
         valid[5:9, 2:7] = False
 
         weird_img = np.random.random(shape)

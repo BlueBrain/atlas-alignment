@@ -21,6 +21,7 @@
 
 import numpy as np
 import tensorflow as tf
+from tensorflow import keras
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import (
     BatchNormalization,
@@ -77,6 +78,7 @@ def get_initial_weights(previous_layer_size):
     return weights
 
 
+@tf.keras.saving.register_keras_serializable("atlalign")
 class BilinearInterpolation_(Layer):
     """Perform bilinear interpolation as a Keras layer.
 
@@ -270,6 +272,7 @@ class BilinearInterpolation_(Layer):
         return values_a + values_b + values_c + values_d
 
 
+@tf.keras.saving.register_keras_serializable("atlalign")
 class BilinearInterpolation(Layer):
     """Implementation using tf.contrib."""
 
@@ -354,7 +357,7 @@ class BilinearInterpolation(Layer):
 
         return output
 
-
+@tf.keras.saving.register_keras_serializable("atlalign")
 class DVFComposition(Layer):
     """Composition of 2 displacement vector fields.
 
@@ -446,7 +449,7 @@ class DVFComposition(Layer):
         dvfs_composition = K.concatenate((delta_x, delta_y), axis=3)
         return dvfs_composition
 
-
+@tf.keras.saving.register_keras_serializable("atlalign")
 class Affine2DVF(Layer):
     """Given an affine transformation matrix (2 x 3) generate the corresponding DVF."""
 
@@ -560,6 +563,7 @@ class Affine2DVF(Layer):
         return base_config
 
 
+@tf.keras.saving.register_keras_serializable("atlalign")
 class NoOp(Layer):
     """No operation layer."""
 
@@ -572,6 +576,7 @@ class NoOp(Layer):
         return input_shape
 
 
+@tf.keras.saving.register_keras_serializable("atlalign")
 class ExtractMoving(Layer):
     """Extract the moving image from the input."""
 

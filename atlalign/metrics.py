@@ -666,7 +666,7 @@ def multiple_images_decorator(fun):
                     "The mask has to have the same shape as the input images."
                 )
 
-            if kwargs["mask"].dtype != np.bool:
+            if kwargs["mask"].dtype != bool:
                 raise ValueError("The mask needs to be an array of booleans.")
 
         # MAIN ALGORITHM

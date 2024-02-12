@@ -903,7 +903,7 @@ def ssmi_img(y_true, y_pred):
         The structural similarity (SSMI) metric. Similarity metric, the higher the more similar the images are.
 
     """
-    return structural_similarity(y_true, y_pred, data_range=[0, 1])
+    return structural_similarity(y_true, y_pred, data_range=1)
 
 
 @multiple_images_decorator

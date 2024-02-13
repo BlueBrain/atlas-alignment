@@ -19,6 +19,7 @@ PYTHON_REQUIRES = ">=3.6.0"
 INSTALL_REQUIRES = [
     "antspyx",
     "imgaug<0.3",
+    "keras==2.6",
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",

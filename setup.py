@@ -27,7 +27,7 @@ INSTALL_REQUIRES = [
     "scikit-image>=0.17.1",
     "scikit-learn>=0.20.2",
     "scipy",
-    "tensorflow>=2.6.0",
+    "tensorflow==2.6.0",
     "tensorflow-addons",  # For resampler in atlalign/ml_utils/layers.py
 ]
 

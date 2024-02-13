@@ -23,6 +23,7 @@ INSTALL_REQUIRES = [
     "mlflow",
     "nibabel>=2.4.0",
     "numpy",
+    "protobuf<3.20.0",
     "seaborn",
     "scikit-image>=0.17.1",
     "scikit-learn>=0.20.2",

@@ -19,17 +19,15 @@ PYTHON_REQUIRES = ">=3.6.0"
 INSTALL_REQUIRES = [
     "antspyx",
     "imgaug<0.3",
-    "keras==2.6",
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",
     "numpy",
-    "protobuf<3.20.0",
     "seaborn",
     "scikit-image>=0.17.1",
     "scikit-learn>=0.20.2",
     "scipy",
-    "tensorflow==2.6.0",
+    "tensorflow>=2.6.0",
     "tensorflow-addons",  # For resampler in atlalign/ml_utils/layers.py
 ]
 

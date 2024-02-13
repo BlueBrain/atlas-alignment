@@ -136,7 +136,15 @@ class TestMLFlowCallback:
             monkeypatch.setattr(
                 cb,
                 "compute_external_metrics",
-                Mock(return_value=pd.DataFrame({"metric": [1, ]})),
+                Mock(
+                    return_value=pd.DataFrame(
+                        {
+                            "metric": [
+                                1,
+                            ]
+                        }
+                    )
+                ),
             )
 
             cb.on_batch_end(None)  # 1

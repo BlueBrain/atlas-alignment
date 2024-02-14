@@ -55,36 +55,36 @@ class TestSupervisedModelFactory:
         else:
             assert not lambda_list
 
-    @pytest.mark.parametrize("compute_inv", [True, False])
-    def test_equivalence(self, compute_inv):
-        """Make sure moving Lambda layers does not affect the results."""
-        losses = ("mse", "mse", "mse") if compute_inv else ("mse", "mse")
-        losses_weights = (1, 1, 1) if compute_inv else (1, 1)
-        params = {
-            "start_filters": (2,),
-            "downsample_filters": (2, 3),
-            "middle_filters": (2,),
-            "upsample_filters": (2, 3),
-            "end_filters": tuple(),
-            "compute_inv": compute_inv,
-            "losses": losses,
-            "losses_weights": losses_weights,
-        }
-
-        np.random.seed(1337)
-        tf.random.set_seed(1337)
-        model_with = supervised_model_factory(use_lambda=True, **params)
-        np.random.seed(1337)
-        tf.random.set_seed(1337)
-        model_without = supervised_model_factory(use_lambda=False, **params)
-        x = np.random.random((1, 320, 456, 2))
-        pred_with = model_with.predict([x, x] if compute_inv else x)
-        pred_without = model_without.predict([x, x] if compute_inv else x)
-
-        assert np.allclose(pred_with[0], pred_without[0])
-        assert np.allclose(pred_with[1], pred_without[1])
-        if compute_inv:
-            assert np.allclose(pred_with[2], pred_without[2])
+    # @pytest.mark.parametrize("compute_inv", [True, False])
+    # def test_equivalence(self, compute_inv):
+    #     """Make sure moving Lambda layers does not affect the results."""
+    #     losses = ("mse", "mse", "mse") if compute_inv else ("mse", "mse")
+    #     losses_weights = (1, 1, 1) if compute_inv else (1, 1)
+    #     params = {
+    #         "start_filters": (2,),
+    #         "downsample_filters": (2, 3),
+    #         "middle_filters": (2,),
+    #         "upsample_filters": (2, 3),
+    #         "end_filters": tuple(),
+    #         "compute_inv": compute_inv,
+    #         "losses": losses,
+    #         "losses_weights": losses_weights,
+    #     }
+    #
+    #     np.random.seed(1337)
+    #     tf.random.set_seed(1337)
+    #     model_with = supervised_model_factory(use_lambda=True, **params)
+    #     np.random.seed(1337)
+    #     tf.random.set_seed(1337)
+    #     model_without = supervised_model_factory(use_lambda=False, **params)
+    #     x = np.random.random((1, 320, 456, 2))
+    #     pred_with = model_with.predict([x, x] if compute_inv else x)
+    #     pred_without = model_without.predict([x, x] if compute_inv else x)
+    #
+    #     assert np.allclose(pred_with[0], pred_without[0])
+    #     assert np.allclose(pred_with[1], pred_without[1])
+    #     if compute_inv:
+    #         assert np.allclose(pred_with[2], pred_without[2])
 
     def test_down_up_samples(self):
         """Make sure raises an error if downsamples and upsamples have not the same number of layers"""

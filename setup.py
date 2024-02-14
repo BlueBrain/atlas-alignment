@@ -18,7 +18,7 @@ brain atlases obtained with ISH gene expression and Nissl stains."""
 PYTHON_REQUIRES = ">=3.6.0"
 INSTALL_REQUIRES = [
     "antspyx",
-    "imgaug<0.3",
+    "imgaug",
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",

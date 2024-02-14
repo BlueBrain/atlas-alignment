@@ -21,7 +21,6 @@
 
 import numpy as np
 import pytest
-import tensorflow as tf
 from tensorflow import keras
 
 from atlalign.nn import supervised_global_model_factory, supervised_model_factory

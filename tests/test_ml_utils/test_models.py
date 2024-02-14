@@ -19,17 +19,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import json
 import pathlib
 from copy import deepcopy
 
-import numpy as np
 import pytest
 from tensorflow import keras
 
 from atlalign.ml_utils import (
-    ExtractMoving,
-    NoOp,
     load_model,
     merge_global_local,
     replace_lambda_in_config,

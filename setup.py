@@ -29,7 +29,6 @@ INSTALL_REQUIRES = [
     "scipy",
     "tensorflow>=2.6.0",
     "tensorflow-addons",  # For resampler in atlalign/ml_utils/layers.py
-    "tf-nightly",
 ]
 
 setup(

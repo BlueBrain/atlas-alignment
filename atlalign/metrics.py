@@ -666,7 +666,7 @@ def multiple_images_decorator(fun):
                     "The mask has to have the same shape as the input images."
                 )
 
-            if kwargs["mask"].dtype != np.bool:
+            if kwargs["mask"].dtype != bool:
                 raise ValueError("The mask needs to be an array of booleans.")
 
         # MAIN ALGORITHM
@@ -903,7 +903,7 @@ def ssmi_img(y_true, y_pred):
         The structural similarity (SSMI) metric. Similarity metric, the higher the more similar the images are.
 
     """
-    return structural_similarity(y_true, y_pred)
+    return structural_similarity(y_true, y_pred, data_range=1)
 
 
 @multiple_images_decorator

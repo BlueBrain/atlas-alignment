@@ -234,7 +234,7 @@ class TestRectangles:
             10, shape, (20, 30), (10, 50), n_levels=4, random_state=random_state
         )
 
-        zeros = np.zeros(shape)
+        zeros = np.zeros((*shape, 1))
         for row in res:
             assert not np.all(row == zeros)
 

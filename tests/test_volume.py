@@ -163,12 +163,11 @@ class TestCoronalInterpolator:
         shape = (10, 11)
         sn = [0, 100, 527]
 
-        index_vector = [slice(5, 9), slice(2, 7)]
         valid = np.ones(shape, dtype=bool)
-        valid[index_vector] = False
+        valid[5:9, 2:7] = False
 
         weird_img = np.random.random(shape)
-        weird_img[index_vector] = np.nan
+        weird_img[5:9, 2:7] = np.nan
         imgs = [np.zeros(shape), weird_img, np.zeros(shape)]
 
         gv = GappedVolume(sn, imgs)

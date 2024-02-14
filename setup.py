@@ -22,7 +22,7 @@ INSTALL_REQUIRES = [
     "matplotlib>=3.0.3",
     "mlflow",
     "nibabel>=2.4.0",
-    "numpy",
+    "numpy<1.24.0",
     "seaborn",
     "scikit-image>=0.17.1",
     "scikit-learn>=0.20.2",

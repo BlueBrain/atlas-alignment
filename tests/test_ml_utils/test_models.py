@@ -200,7 +200,6 @@ class TestReplaceLambdaInConfig:
             )
         elif output_format == "dict":
             assert isinstance(output, dict)
-            #breakpoint()
             new_model = keras.Model.from_config(
                 output,
                 custom_objects={

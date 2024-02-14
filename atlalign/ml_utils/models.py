@@ -359,8 +359,8 @@ def replace_lambda_in_config(input_config, output_format="dict", verbose=False):
                 "Affine2DVF": Affine2DVF,
                 "DVFComposition": DVFComposition,
                 "BilinearInterpolation": BilinearInterpolation,
-                "ExtractMoving": ExtractMoving,
-                "NoOp": NoOp,
+                "extract_moving": ExtractMoving,
+                "inv_dvf": NoOp,
             },
         ).to_json()
 

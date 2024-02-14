@@ -197,18 +197,15 @@ class TestReplaceLambdaInConfig:
             assert isinstance(output, str)
             new_model = keras.models.model_from_json(
                 output,
-                custom_objects={
-                    "ExtractMoving": ExtractMoving,
-                    "NoOp": NoOp,
-                },
             )
         elif output_format == "dict":
             assert isinstance(output, dict)
+            #breakpoint()
             new_model = keras.Model.from_config(
                 output,
                 custom_objects={
-                    "ExtractMoving": ExtractMoving,
-                    "NoOp": NoOp,
+                    "extract_moving": ExtractMoving,
+                    "inv_dvf": NoOp,
                 },
             )
 
